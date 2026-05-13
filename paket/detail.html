@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detail Paket - Sistem Manajemen Haji & Umroh</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="../assets/css/custom.css">
+</head>
+<body class="bg-gray-50">
+
+  <!-- Sidebar -->
+  <div id="sidebar-container"></div>
+
+  <!-- Main Content -->
+  <div class="lg:ml-64">
+    <!-- Topbar -->
+    <div id="topbar-container"></div>
+
+    <!-- Page Content -->
+    <main class="p-6">
+      <!-- Breadcrumb -->
+      <nav class="flex items-center gap-2 text-sm text-gray-600 mb-6">
+        <a href="index.html" class="hover:text-emerald-600">Paket</a>
+        <i data-lucide="chevron-right" class="w-4 h-4"></i>
+        <span class="text-gray-900 font-medium">Detail Paket</span>
+      </nav>
+
+      <!-- Hero Section -->
+      <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden mb-6">
+        <div class="h-96 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?w=1200')"></div>
+        <div class="p-6">
+          <div class="flex flex-col md:flex-row md:items-start md:justify-between">
+            <div class="flex-1">
+              <div class="flex items-center gap-3 mb-3">
+                <span class="inline-block px-3 py-1 text-sm font-semibold rounded-full bg-emerald-100 text-emerald-700">Umroh</span>
+                <span class="text-sm text-gray-600">12 Hari</span>
+              </div>
+              <h1 class="text-3xl font-bold text-gray-900 mb-3">Umroh Reguler 12 Hari</h1>
+              <p class="text-gray-600 mb-4">Paket umroh ekonomis dengan fasilitas lengkap untuk perjalanan ibadah yang nyaman dan berkesan</p>
+              <div class="flex items-baseline gap-2">
+                <span class="text-3xl font-bold text-emerald-600">Rp 28.500.000</span>
+                <span class="text-sm text-gray-600">per jamaah</span>
+              </div>
+            </div>
+            <div class="flex gap-3 mt-4 md:mt-0">
+              <button class="flex items-center gap-2 px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition">
+                <i data-lucide="edit" class="w-4 h-4"></i>
+                Edit Paket
+              </button>
+              <button class="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition">
+                <i data-lucide="printer" class="w-4 h-4"></i>
+                Cetak
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Content Grid -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Main Content -->
+        <div class="lg:col-span-2 space-y-6">
+          <!-- Itinerary -->
+          <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+            <h2 class="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+              <i data-lucide="map" class="w-5 h-5 text-emerald-600"></i>
+              Itinerary
+            </h2>
+            <p class="text-gray-700 leading-relaxed">
+              <strong>5 Hari di Mekkah:</strong> Tawaf, Sa'i, ziarah ke Jabal Rahmah, Jabal Tsur, Gua Hira, dan tempat bersejarah lainnya.<br><br>
+              <strong>5 Hari di Madinah:</strong> Shalat di Masjid Nabawi, ziarah ke Raudhah, Makam Rasulullah SAW, Masjid Quba, Uhud, dan tempat bersejarah lainnya.<br><br>
+              <strong>2 Hari Perjalanan:</strong> Penerbangan Jakarta - Jeddah - Jakarta dengan transit nyaman.
+            </p>
+          </div>
+
+          <!-- Fasilitas -->
+          <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+            <h2 class="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+              <i data-lucide="check-circle" class="w-5 h-5 text-emerald-600"></i>
+              Fasilitas Termasuk
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <div class="flex items-center gap-3">
+                <div class="flex items-center justify-center w-8 h-8 bg-emerald-100 rounded-lg flex-shrink-0">
+                  <i data-lucide="plane" class="w-4 h-4 text-emerald-600"></i>
+                </div>
+                <span class="text-gray-700">Tiket Pesawat PP</span>
+              </div>
+              <div class="flex items-center gap-3">
+                <div class="flex items-center justify-center w-8 h-8 bg-emerald-100 rounded-lg flex-shrink-0">
+                  <i data-lucide="file-text" class="w-4 h-4 text-emerald-600"></i>
+                </div>
+                <span class="text-gray-700">Pengurusan Visa</span>
+              </div>
+              <div class="flex items-center gap-3">
+                <div class="flex items-center justify-center w-8 h-8 bg-emerald-100 rounded-lg flex-shrink-0">
+                  <i data-lucide="hotel" class="w-4 h-4 text-emerald-600"></i>
+                </div>
+                <span class="text-gray-700">Hotel Bintang 3</span>
+              </div>
+              <div class="flex items-center gap-3">
+                <div class="flex items-center justify-center w-8 h-8 bg-emerald-100 rounded-lg flex-shrink-0">
+                  <i data-lucide="bus" class="w-4 h-4 text-emerald-600"></i>
+                </div>
+                <span class="text-gray-700">Transportasi AC</span>
+              </div>
+              <div class="flex items-center gap-3">
+                <div class="flex items-center justify-center w-8 h-8 bg-emerald-100 rounded-lg flex-shrink-0">
+                  <i data-lucide="utensils" class="w-4 h-4 text-emerald-600"></i>
+                </div>
+                <span class="text-gray-700">Makan 3x Sehari</span>
+              </div>
+              <div class="flex items-center gap-3">
+                <div class="flex items-center justify-center w-8 h-8 bg-emerald-100 rounded-lg flex-shrink-0">
+                  <i data-lucide="user" class="w-4 h-4 text-emerald-600"></i>
+                </div>
+                <span class="text-gray-700">Tour Guide Berpengalaman</span>
+              </div>
+              <div class="flex items-center gap-3">
+                <div class="flex items-center justify-center w-8 h-8 bg-emerald-100 rounded-lg flex-shrink-0">
+                  <i data-lucide="shopping-bag" class="w-4 h-4 text-emerald-600"></i>
+                </div>
+                <span class="text-gray-700">Perlengkapan Ibadah</span>
+              </div>
+              <div class="flex items-center gap-3">
+                <div class="flex items-center justify-center w-8 h-8 bg-emerald-100 rounded-lg flex-shrink-0">
+                  <i data-lucide="shield" class="w-4 h-4 text-emerald-600"></i>
+                </div>
+                <span class="text-gray-700">Asuransi Perjalanan</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Syarat & Ketentuan -->
+          <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+            <h2 class="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+              <i data-lucide="info" class="w-5 h-5 text-emerald-600"></i>
+              Syarat & Ketentuan
+            </h2>
+            <ul class="space-y-2 text-gray-700">
+              <li class="flex items-start gap-2">
+                <i data-lucide="check" class="w-5 h-5 text-emerald-600 flex-shrink-0 mt-0.5"></i>
+                <span>Paspor masih berlaku minimal 7 bulan</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <i data-lucide="check" class="w-5 h-5 text-emerald-600 flex-shrink-0 mt-0.5"></i>
+                <span>Fotocopy KTP dan Kartu Keluarga</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <i data-lucide="check" class="w-5 h-5 text-emerald-600 flex-shrink-0 mt-0.5"></i>
+                <span>Pas foto 4x6 background putih (6 lembar)</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <i data-lucide="check" class="w-5 h-5 text-emerald-600 flex-shrink-0 mt-0.5"></i>
+                <span>Sertifikat vaksin meningitis</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <i data-lucide="check" class="w-5 h-5 text-emerald-600 flex-shrink-0 mt-0.5"></i>
+                <span>Buku nikah (untuk yang sudah menikah)</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <i data-lucide="check" class="w-5 h-5 text-emerald-600 flex-shrink-0 mt-0.5"></i>
+                <span>DP minimal 30% dari total biaya</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <i data-lucide="check" class="w-5 h-5 text-emerald-600 flex-shrink-0 mt-0.5"></i>
+                <span>Pelunasan H-30 sebelum keberangkatan</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="space-y-6">
+          <!-- Quick Info -->
+          <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+            <h3 class="text-lg font-bold text-gray-900 mb-4">Informasi Paket</h3>
+            <div class="space-y-4">
+              <div>
+                <p class="text-sm text-gray-600 mb-1">Hotel Mekkah</p>
+                <p class="font-semibold text-gray-900">Bintang 3</p>
+                <p class="text-sm text-gray-600">200m dari Masjidil Haram</p>
+              </div>
+              <div>
+                <p class="text-sm text-gray-600 mb-1">Hotel Madinah</p>
+                <p class="font-semibold text-gray-900">Bintang 3</p>
+                <p class="text-sm text-gray-600">300m dari Masjid Nabawi</p>
+              </div>
+              <div>
+                <p class="text-sm text-gray-600 mb-1">Maskapai</p>
+                <p class="font-semibold text-gray-900">Garuda Indonesia / Saudia</p>
+              </div>
+              <div>
+                <p class="text-sm text-gray-600 mb-1">Kuota per Keberangkatan</p>
+                <p class="font-semibold text-gray-900">45-50 Jamaah</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Keberangkatan Tersedia -->
+          <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+            <h3 class="text-lg font-bold text-gray-900 mb-4">Keberangkatan Tersedia</h3>
+            <div class="space-y-3">
+              <div class="p-4 bg-emerald-50 border border-emerald-200 rounded-lg">
+                <div class="flex items-center justify-between mb-2">
+                  <p class="font-semibold text-gray-900">20 Mei 2026</p>
+                  <span class="badge badge-success">Open</span>
+                </div>
+                <p class="text-sm text-gray-600">45/50 Jamaah</p>
+              </div>
+              <div class="p-4 bg-gray-50 border border-gray-200 rounded-lg">
+                <div class="flex items-center justify-between mb-2">
+                  <p class="font-semibold text-gray-900">15 Juni 2026</p>
+                  <span class="badge badge-success">Open</span>
+                </div>
+                <p class="text-sm text-gray-600">32/50 Jamaah</p>
+              </div>
+              <div class="p-4 bg-gray-50 border border-gray-200 rounded-lg">
+                <div class="flex items-center justify-between mb-2">
+                  <p class="font-semibold text-gray-900">10 Juli 2026</p>
+                  <span class="badge badge-success">Open</span>
+                </div>
+                <p class="text-sm text-gray-600">18/50 Jamaah</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- CTA -->
+          <div class="bg-gradient-to-br from-emerald-600 to-emerald-700 rounded-xl shadow-lg p-6 text-white">
+            <h3 class="text-lg font-bold mb-2">Tertarik dengan paket ini?</h3>
+            <p class="text-sm text-emerald-100 mb-4">Hubungi kami untuk informasi lebih lanjut atau daftarkan jamaah sekarang</p>
+            <button class="w-full px-4 py-2 bg-white text-emerald-600 rounded-lg hover:bg-emerald-50 transition font-semibold">
+              Daftar Sekarang
+            </button>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Scripts -->
+  <script src="../assets/js/data.js"></script>
+  <script src="../assets/js/main.js"></script>
+  <script>
+    // Initialize Lucide icons
+    lucide.createIcons();
+  </script>
+</body>
+</html>

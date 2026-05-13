@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Form Jamaah - Sistem Manajemen Haji & Umroh</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="../assets/css/custom.css">
+</head>
+<body class="bg-gray-50">
+
+  <!-- Sidebar -->
+  <div id="sidebar-container"></div>
+
+  <!-- Main Content -->
+  <div class="lg:ml-64">
+    <!-- Topbar -->
+    <div id="topbar-container"></div>
+
+    <!-- Page Content -->
+    <main class="p-6">
+      <!-- Breadcrumb -->
+      <nav class="flex items-center gap-2 text-sm text-gray-600 mb-6">
+        <a href="index.html" class="hover:text-emerald-600">Jamaah</a>
+        <i data-lucide="chevron-right" class="w-4 h-4"></i>
+        <span class="text-gray-900 font-medium">Tambah Jamaah</span>
+      </nav>
+
+      <!-- Form Card -->
+      <div class="bg-white rounded-xl shadow-sm border border-gray-100">
+        <div class="p-6 border-b border-gray-200">
+          <h1 class="text-2xl font-bold text-gray-900 mb-2">Tambah Jamaah Baru</h1>
+          <p class="text-sm text-gray-600">Lengkapi data jamaah dengan benar</p>
+        </div>
+
+        <form id="jamaahForm" data-submit-message="Data jamaah berhasil disimpan!" class="p-6">
+          <!-- Step Indicator -->
+          <div class="mb-8">
+            <div class="flex items-center justify-between">
+              <div class="flex flex-col items-center flex-1">
+                <div class="w-10 h-10 bg-emerald-600 text-white rounded-full flex items-center justify-center font-semibold mb-2">1</div>
+                <p class="text-xs font-medium text-emerald-600">Data Pribadi</p>
+              </div>
+              <div class="flex-1 h-1 bg-gray-200 mx-2"></div>
+              <div class="flex flex-col items-center flex-1">
+                <div class="w-10 h-10 bg-gray-200 text-gray-600 rounded-full flex items-center justify-center font-semibold mb-2">2</div>
+                <p class="text-xs font-medium text-gray-600">Paket & Keberangkatan</p>
+              </div>
+              <div class="flex-1 h-1 bg-gray-200 mx-2"></div>
+              <div class="flex flex-col items-center flex-1">
+                <div class="w-10 h-10 bg-gray-200 text-gray-600 rounded-full flex items-center justify-center font-semibold mb-2">3</div>
+                <p class="text-xs font-medium text-gray-600">Kontak Darurat</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 1: Data Pribadi -->
+          <div id="step1" class="space-y-6">
+            <h3 class="text-lg font-bold text-gray-900 mb-4">Data Pribadi</h3>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <!-- NIK -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">
+                  NIK <span class="text-red-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  name="nik"
+                  placeholder="3201012345670001"
+                  class="block w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                  required
+                >
+              </div>
+
+              <!-- Nama Lengkap -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">
+                  Nama Lengkap <span class="text-red-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  name="nama"
+                  placeholder="Nama sesuai KTP"
+                  class="block w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                  required
+                >
+              </div>
+
+              <!-- Jenis Kelamin -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">
+                  Jenis Kelamin <span class="text-red-500">*</span>
+                </label>
+                <select
+                  name="gender"
+                  class="block w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                  required
+                >
+                  <option value="">Pilih jenis kelamin</option>
+                  <option value="Laki-laki">Laki-laki</option>
+                  <option value="Perempuan">Perempuan</option>
+                </select>
+              </div>
+
+              <!-- Tempat Lahir -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">
+                  Tempat Lahir <span class="text-red-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  name="tempatLahir"
+                  placeholder="Jakarta"
+                  class="block w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                  required
+                >
+              </div>
+
+              <!-- Tanggal Lahir -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">
+                  Tanggal Lahir <span class="text-red-500">*</span>
+                </label>
+                <input
+                  type="date"
+                  name="tanggalLahir"
+                  class="block w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                  required
+                >
+              </div>
+
+              <!-- Golongan Darah -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">
+                  Golongan Darah
+                </label>
+                <select
+                  name="golDarah"
+                  class="block w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                >
+                  <option value="">Pilih golongan darah</option>
+                  <option value="A">A</option>
+                  <option value="B">B</option>
+                  <option value="AB">AB</option>
+                  <option value="O">O</option>
+                </select>
+              </div>
+
+              <!-- Nomor Paspor -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">
+                  Nomor Paspor <span class="text-red-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  name="noPaspor"
+                  placeholder="A1234567"
+                  class="block w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                  required
+                >
+              </div>
+
+              <!-- Nomor HP -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">
+                  Nomor HP <span class="text-red-500">*</span>
+                </label>
+                <input
+                  type="tel"
+                  name="noHp"
+                  placeholder="081234567890"
+                  class="block w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                  required
+                >
+              </div>
+
+              <!-- Email -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">
+                  Email
+                </label>
+                <input
+                  type="email"
+                  name="email"
+                  placeholder="email@example.com"
+                  class="block w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                >
+              </div>
+
+              <!-- Status Pernikahan -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">
+                  Status Pernikahan
+                </label>
+                <select
+                  name="statusNikah"
+                  class="block w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                >
+                  <option value="">Pilih status</option>
+                  <option value="Belum Menikah">Belum Menikah</option>
+                  <option value="Menikah">Menikah</option>
+                  <option value="Cerai">Cerai</option>
+                  <option value="Duda/Janda">Duda/Janda</option>
+                </select>
+              </div>
+
+              <!-- Alamat -->
+              <div class="md:col-span-2">
+                <label class="block text-sm font-medium text-gray-700 mb-2">
+                  Alamat Lengkap <span class="text-red-500">*</span>
+                </label>
+                <textarea
+                  name="alamat"
+                  rows="3"
+                  placeholder="Jl. Contoh No. 123, RT/RW 001/002, Kelurahan, Kecamatan, Kota"
+                  class="block w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                  required
+                ></textarea>
+              </div>
+            </div>
+
+            <div class="flex justify-end gap-3 pt-6 border-t border-gray-200">
+              <a href="index.html" class="px-6 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition">
+                Batal
+              </a>
+              <button type="button" onclick="nextStep(2)" class="px-6 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition">
+                Lanjut
+              </button>
+            </div>
+          </div>
+
+          <!-- Step 2: Paket & Keberangkatan (Hidden by default) -->
+          <div id="step2" class="space-y-6 hidden">
+            <h3 class="text-lg font-bold text-gray-900 mb-4">Paket & Keberangkatan</h3>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <!-- Paket -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">
+                  Pilih Paket <span class="text-red-500">*</span>
+                </label>
+                <select
+                  name="paket"
+                  class="block w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                  required
+                >
+                  <option value="">Pilih paket</option>
+                  <option value="1">Umroh Reguler 12 Hari - Rp 28.500.000</option>
+                  <option value="2">Umroh Ramadhan 15 Hari - Rp 45.000.000</option>
+                  <option value="3">Haji Plus 40 Hari - Rp 125.000.000</option>
+                </select>
+              </div>
+
+              <!-- Keberangkatan -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">
+                  Pilih Keberangkatan <span class="text-red-500">*</span>
+                </label>
+                <select
+                  name="keberangkatan"
+                  class="block w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                  required
+                >
+                  <option value="">Pilih keberangkatan</option>
+                  <option value="1">CGK-20260520-REGULER (20 Mei 2026)</option>
+                  <option value="2">CGK-20260615-HAJIPLUS (15 Juni 2026)</option>
+                  <option value="3">SUB-20260310-RAMADHAN (10 Maret 2026)</option>
+                </select>
+              </div>
+
+              <!-- Metode Pembayaran -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">
+                  Metode Pembayaran <span class="text-red-500">*</span>
+                </label>
+                <select
+                  name="metodePembayaran"
+                  class="block w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                  required
+                >
+                  <option value="">Pilih metode</option>
+                  <option value="Lunas">Lunas</option>
+                  <option value="Cicilan 2x">Cicilan 2 Termin</option>
+                  <option value="Cicilan 3x">Cicilan 3 Termin</option>
+                </select>
+              </div>
+
+              <!-- Pembayaran DP -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">
+                  Pembayaran DP
+                </label>
+                <input
+                  type="number"
+                  name="dp"
+                  placeholder="10000000"
+                  class="block w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                >
+              </div>
+            </div>
+
+            <div class="flex justify-between gap-3 pt-6 border-t border-gray-200">
+              <button type="button" onclick="prevStep(1)" class="px-6 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition">
+                Kembali
+              </button>
+              <button type="button" onclick="nextStep(3)" class="px-6 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition">
+                Lanjut
+              </button>
+            </div>
+          </div>
+
+          <!-- Step 3: Kontak Darurat (Hidden by default) -->
+          <div id="step3" class="space-y-6 hidden">
+            <h3 class="text-lg font-bold text-gray-900 mb-4">Kontak Darurat</h3>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <!-- Nama Kontak Darurat -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">
+                  Nama Lengkap <span class="text-red-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  name="namaKontakDarurat"
+                  placeholder="Nama keluarga/kerabat"
+                  class="block w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                  required
+                >
+              </div>
+
+              <!-- Hubungan -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">
+                  Hubungan <span class="text-red-500">*</span>
+                </label>
+                <select
+                  name="hubungan"
+                  class="block w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                  required
+                >
+                  <option value="">Pilih hubungan</option>
+                  <option value="Suami">Suami</option>
+                  <option value="Istri">Istri</option>
+                  <option value="Anak">Anak</option>
+                  <option value="Orang Tua">Orang Tua</option>
+                  <option value="Saudara">Saudara</option>
+                  <option value="Lainnya">Lainnya</option>
+                </select>
+              </div>
+
+              <!-- Nomor HP Kontak Darurat -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">
+                  Nomor HP <span class="text-red-500">*</span>
+                </label>
+                <input
+                  type="tel"
+                  name="noHpKontakDarurat"
+                  placeholder="081234567890"
+                  class="block w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                  required
+                >
+              </div>
+
+              <!-- Alamat Kontak Darurat -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">
+                  Alamat
+                </label>
+                <input
+                  type="text"
+                  name="alamatKontakDarurat"
+                  placeholder="Alamat lengkap"
+                  class="block w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                >
+              </div>
+            </div>
+
+            <div class="flex justify-between gap-3 pt-6 border-t border-gray-200">
+              <button type="button" onclick="prevStep(2)" class="px-6 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition">
+                Kembali
+              </button>
+              <button type="submit" class="px-6 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition">
+                Simpan Data
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </main>
+  </div>
+
+  <!-- Scripts -->
+  <script src="../assets/js/data.js"></script>
+  <script src="../assets/js/main.js"></script>
+  <script>
+    // Initialize Lucide icons
+    lucide.createIcons();
+
+    let currentStep = 1;
+
+    function nextStep(step) {
+      // Hide current step
+      document.getElementById(`step${currentStep}`).classList.add('hidden');
+
+      // Show next step
+      document.getElementById(`step${step}`).classList.remove('hidden');
+
+      // Update step indicator
+      updateStepIndicator(step);
+
+      currentStep = step;
+    }
+
+    function prevStep(step) {
+      // Hide current step
+      document.getElementById(`step${currentStep}`).classList.add('hidden');
+
+      // Show previous step
+      document.getElementById(`step${step}`).classList.remove('hidden');
+
+      // Update step indicator
+      updateStepIndicator(step);
+
+      currentStep = step;
+    }
+
+    function updateStepIndicator(step) {
+      for (let i = 1; i <= 3; i++) {
+        const indicator = document.querySelector(`.flex.items-center.justify-between > div:nth-child(${i * 2 - 1}) > div`);
+        const text = document.querySelector(`.flex.items-center.justify-between > div:nth-child(${i * 2 - 1}) > p`);
+
+        if (i <= step) {
+          indicator.classList.remove('bg-gray-200', 'text-gray-600');
+          indicator.classList.add('bg-emerald-600', 'text-white');
+          text.classList.remove('text-gray-600');
+          text.classList.add('text-emerald-600');
+        } else {
+          indicator.classList.remove('bg-emerald-600', 'text-white');
+          indicator.classList.add('bg-gray-200', 'text-gray-600');
+          text.classList.remove('text-emerald-600');
+          text.classList.add('text-gray-600');
+        }
+      }
+    }
+
+    // Handle form submission
+    document.getElementById('jamaahForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      showToast('Data jamaah berhasil disimpan!', 'success');
+      setTimeout(() => {
+        window.location.href = 'index.html';
+      }, 1500);
+    });
+  </script>
+</body>
+</html>

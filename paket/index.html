@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Paket Haji & Umroh - Sistem Manajemen Haji & Umroh</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="../assets/css/custom.css">
+</head>
+<body class="bg-gray-50">
+
+  <!-- Sidebar -->
+  <div id="sidebar-container"></div>
+
+  <!-- Main Content -->
+  <div class="lg:ml-64">
+    <!-- Topbar -->
+    <div id="topbar-container"></div>
+
+    <!-- Page Content -->
+    <main class="p-6">
+      <!-- Page Header -->
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
+        <div>
+          <h1 class="text-2xl font-bold text-gray-900 mb-2">Paket Haji & Umroh</h1>
+          <p class="text-sm text-gray-600">Kelola paket perjalanan ibadah</p>
+        </div>
+        <div class="flex gap-3 mt-4 md:mt-0">
+          <button onclick="openModal('addPaketModal')" class="flex items-center gap-2 px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition">
+            <i data-lucide="plus" class="w-4 h-4"></i>
+            Tambah Paket
+          </button>
+        </div>
+      </div>
+
+      <!-- Filter Tabs -->
+      <div class="flex gap-2 mb-6">
+        <button class="px-4 py-2 bg-emerald-600 text-white rounded-lg font-medium">Semua Paket</button>
+        <button class="px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition">Umroh</button>
+        <button class="px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition">Haji</button>
+      </div>
+
+      <!-- Paket Cards Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="paketGrid">
+        <!-- Cards will be populated by JavaScript -->
+      </div>
+    </main>
+  </div>
+
+  <!-- Add Paket Modal -->
+  <div id="addPaketModal" class="modal-backdrop hidden fixed inset-0 z-50 items-center justify-center p-4">
+    <div class="bg-white rounded-xl shadow-2xl max-w-2xl w-full p-6 max-h-[90vh] overflow-y-auto">
+      <div class="flex items-center justify-between mb-6">
+        <h3 class="text-xl font-bold text-gray-900">Tambah Paket Baru</h3>
+        <button onclick="closeModal('addPaketModal')" class="text-gray-400 hover:text-gray-600">
+          <i data-lucide="x" class="w-6 h-6"></i>
+        </button>
+      </div>
+
+      <form data-submit-message="Paket berhasil ditambahkan!">
+        <div class="space-y-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Nama Paket</label>
+            <input type="text" class="block w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500" placeholder="Umroh Reguler 12 Hari" required>
+          </div>
+
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Tipe</label>
+              <select class="block w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500" required>
+                <option value="">Pilih tipe</option>
+                <option value="Umroh">Umroh</option>
+                <option value="Haji">Haji</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Durasi</label>
+              <input type="text" class="block w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500" placeholder="12 Hari" required>
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Harga (Rp)</label>
+            <input type="number" class="block w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500" placeholder="28500000" required>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Deskripsi</label>
+            <textarea rows="3" class="block w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500" placeholder="Deskripsi paket"></textarea>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Hotel</label>
+            <input type="text" class="block w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500" placeholder="Hotel Bintang 3 (200m dari Masjidil Haram)">
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Maskapai</label>
+            <input type="text" class="block w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500" placeholder="Garuda Indonesia / Saudia">
+          </div>
+        </div>
+
+        <div class="flex gap-3 mt-6">
+          <button type="button" onclick="closeModal('addPaketModal')" class="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition">
+            Batal
+          </button>
+          <button type="submit" class="flex-1 px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition">
+            Simpan
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="../assets/js/data.js"></script>
+  <script src="../assets/js/main.js"></script>
+  <script>
+    // Initialize Lucide icons
+    lucide.createIcons();
+
+    // Populate paket cards
+    function populatePaketCards() {
+      const grid = document.getElementById('paketGrid');
+      grid.innerHTML = dummyData.paket.map(paket => `
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden card-hover">
+          <div class="h-48 bg-cover bg-center" style="background-image: url('${paket.image}')"></div>
+          <div class="p-6">
+            <div class="flex items-start justify-between mb-3">
+              <div>
+                <span class="inline-block px-3 py-1 text-xs font-semibold rounded-full ${
+                  paket.tipe === 'Umroh' ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'
+                }">${paket.tipe}</span>
+              </div>
+              <span class="text-xs text-gray-600">${paket.durasi}</span>
+            </div>
+            <h3 class="text-lg font-bold text-gray-900 mb-2">${paket.nama}</h3>
+            <p class="text-sm text-gray-600 mb-4 line-clamp-2">${paket.deskripsi}</p>
+
+            <div class="space-y-2 mb-4">
+              <div class="flex items-center gap-2 text-sm text-gray-600">
+                <i data-lucide="hotel" class="w-4 h-4"></i>
+                <span>${paket.hotel}</span>
+              </div>
+              <div class="flex items-center gap-2 text-sm text-gray-600">
+                <i data-lucide="plane" class="w-4 h-4"></i>
+                <span>${paket.maskapai}</span>
+              </div>
+            </div>
+
+            <div class="flex items-center justify-between pt-4 border-t border-gray-200">
+              <div>
+                <p class="text-xs text-gray-600">Mulai dari</p>
+                <p class="text-xl font-bold text-emerald-600">${formatRupiah(paket.harga)}</p>
+              </div>
+              <a href="detail.html?id=${paket.id}" class="px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition text-sm font-medium">
+                Detail
+              </a>
+            </div>
+          </div>
+        </div>
+      `).join('');
+      lucide.createIcons();
+    }
+
+    // Initialize
+    populatePaketCards();
+  </script>
+</body>
+</html>
