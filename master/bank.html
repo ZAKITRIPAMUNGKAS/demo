@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Master Bank - Sistem Manajemen Haji & Umroh</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="../assets/css/custom.css">
+</head>
+<body class="bg-gray-50">
+
+  <!-- Sidebar -->
+  <div id="sidebar-container"></div>
+
+  <!-- Main Content -->
+  <div class="lg:ml-64">
+    <!-- Topbar -->
+    <div id="topbar-container"></div>
+
+    <!-- Page Content -->
+    <main class="p-6">
+      <!-- Page Header -->
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
+        <div>
+          <h1 class="text-2xl font-bold text-gray-900 mb-2">Master Data Bank</h1>
+          <p class="text-sm text-gray-600">Kelola rekening bank untuk pembayaran</p>
+        </div>
+        <div class="flex gap-3 mt-4 md:mt-0">
+          <button onclick="openModal('addBankModal')" class="flex items-center gap-2 px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition">
+            <i data-lucide="plus" class="w-4 h-4"></i>
+            Tambah Rekening
+          </button>
+        </div>
+      </div>
+
+      <!-- Filters -->
+      <div class="bg-white rounded-xl shadow-sm p-6 mb-6 border border-gray-100">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Cari Bank</label>
+            <div class="relative">
+              <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <i data-lucide="search" class="w-5 h-5 text-gray-400"></i>
+              </div>
+              <input
+                type="text"
+                id="searchInput"
+                placeholder="Cari nama bank atau nomor rekening..."
+                class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+              >
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Status</label>
+            <select class="block w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
+              <option value="">Semua Status</option>
+              <option value="aktif">Aktif</option>
+              <option value="nonaktif">Non-Aktif</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bank Table -->
+      <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="w-full table-striped">
+            <thead class="bg-gray-50 border-b border-gray-200">
+              <tr>
+                <th class="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Nama Bank</th>
+                <th class="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Nomor Rekening</th>
+                <th class="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Atas Nama</th>
+                <th class="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Cabang</th>
+                <th class="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Status</th>
+                <th class="px-6 py-3 text-right text-xs font-semibold text-gray-700 uppercase tracking-wider">Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="bankTable" class="divide-y divide-gray-200">
+              <tr>
+                <td class="px-6 py-4">
+                  <div class="flex items-center gap-3">
+                    <div class="flex items-center justify-center w-10 h-10 bg-blue-100 rounded-lg">
+                      <i data-lucide="building-2" class="w-5 h-5 text-blue-600"></i>
+                    </div>
+                    <p class="font-semibold text-gray-900">Bank BCA</p>
+                  </div>
+                </td>
+                <td class="px-6 py-4">
+                  <p class="font-mono text-sm text-gray-900">1234567890</p>
+                </td>
+                <td class="px-6 py-4">
+                  <p class="text-sm text-gray-900">PT Haji Umroh Berkah</p>
+                </td>
+                <td class="px-6 py-4">
+                  <p class="text-sm text-gray-600">KCP Jakarta Pusat</p>
+                </td>
+                <td class="px-6 py-4">
+                  <span class="badge badge-success">Aktif</span>
+                </td>
+                <td class="px-6 py-4 text-right">
+                  <div class="flex items-center justify-end gap-2">
+                    <button class="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition" title="Edit">
+                      <i data-lucide="edit" class="w-4 h-4"></i>
+                    </button>
+                    <button class="p-2 text-red-600 hover:bg-red-50 rounded-lg transition" title="Hapus">
+                      <i data-lucide="trash-2" class="w-4 h-4"></i>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td class="px-6 py-4">
+                  <div class="flex items-center gap-3">
+                    <div class="flex items-center justify-center w-10 h-10 bg-amber-100 rounded-lg">
+                      <i data-lucide="building-2" class="w-5 h-5 text-amber-600"></i>
+                    </div>
+                    <p class="font-semibold text-gray-900">Bank Mandiri</p>
+                  </div>
+                </td>
+                <td class="px-6 py-4">
+                  <p class="font-mono text-sm text-gray-900">9876543210</p>
+                </td>
+                <td class="px-6 py-4">
+                  <p class="text-sm text-gray-900">PT Haji Umroh Berkah</p>
+                </td>
+                <td class="px-6 py-4">
+                  <p class="text-sm text-gray-600">KCP Tanah Abang</p>
+                </td>
+                <td class="px-6 py-4">
+                  <span class="badge badge-success">Aktif</span>
+                </td>
+                <td class="px-6 py-4 text-right">
+                  <div class="flex items-center justify-end gap-2">
+                    <button class="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition" title="Edit">
+                      <i data-lucide="edit" class="w-4 h-4"></i>
+                    </button>
+                    <button class="p-2 text-red-600 hover:bg-red-50 rounded-lg transition" title="Hapus">
+                      <i data-lucide="trash-2" class="w-4 h-4"></i>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td class="px-6 py-4">
+                  <div class="flex items-center gap-3">
+                    <div class="flex items-center justify-center w-10 h-10 bg-emerald-100 rounded-lg">
+                      <i data-lucide="building-2" class="w-5 h-5 text-emerald-600"></i>
+                    </div>
+                    <p class="font-semibold text-gray-900">Bank BNI</p>
+                  </div>
+                </td>
+                <td class="px-6 py-4">
+                  <p class="font-mono text-sm text-gray-900">5555666677</p>
+                </td>
+                <td class="px-6 py-4">
+                  <p class="text-sm text-gray-900">PT Haji Umroh Berkah</p>
+                </td>
+                <td class="px-6 py-4">
+                  <p class="text-sm text-gray-600">KCP Sudirman</p>
+                </td>
+                <td class="px-6 py-4">
+                  <span class="badge badge-success">Aktif</span>
+                </td>
+                <td class="px-6 py-4 text-right">
+                  <div class="flex items-center justify-end gap-2">
+                    <button class="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition" title="Edit">
+                      <i data-lucide="edit" class="w-4 h-4"></i>
+                    </button>
+                    <button class="p-2 text-red-600 hover:bg-red-50 rounded-lg transition" title="Hapus">
+                      <i data-lucide="trash-2" class="w-4 h-4"></i>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td class="px-6 py-4">
+                  <div class="flex items-center gap-3">
+                    <div class="flex items-center justify-center w-10 h-10 bg-red-100 rounded-lg">
+                      <i data-lucide="building-2" class="w-5 h-5 text-red-600"></i>
+                    </div>
+                    <p class="font-semibold text-gray-900">Bank BRI</p>
+                  </div>
+                </td>
+                <td class="px-6 py-4">
+                  <p class="font-mono text-sm text-gray-900">3333444455</p>
+                </td>
+                <td class="px-6 py-4">
+                  <p class="text-sm text-gray-900">PT Haji Umroh Berkah</p>
+                </td>
+                <td class="px-6 py-4">
+                  <p class="text-sm text-gray-600">KCP Thamrin</p>
+                </td>
+                <td class="px-6 py-4">
+                  <span class="badge badge-success">Aktif</span>
+                </td>
+                <td class="px-6 py-4 text-right">
+                  <div class="flex items-center justify-end gap-2">
+                    <button class="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition" title="Edit">
+                      <i data-lucide="edit" class="w-4 h-4"></i>
+                    </button>
+                    <button class="p-2 text-red-600 hover:bg-red-50 rounded-lg transition" title="Hapus">
+                      <i data-lucide="trash-2" class="w-4 h-4"></i>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Pagination -->
+        <div class="px-6 py-4 border-t border-gray-200 flex items-center justify-between">
+          <p class="text-sm text-gray-600">Menampilkan <span class="font-semibold">1-4</span> dari <span class="font-semibold">4</span> rekening</p>
+          <div class="flex gap-2">
+            <button class="px-3 py-1 border border-gray-300 rounded-lg text-sm text-gray-700 hover:bg-gray-50 disabled:opacity-50" disabled>
+              Sebelumnya
+            </button>
+            <button class="px-3 py-1 bg-emerald-600 text-white rounded-lg text-sm">1</button>
+            <button class="px-3 py-1 border border-gray-300 rounded-lg text-sm text-gray-700 hover:bg-gray-50 disabled:opacity-50" disabled>
+              Selanjutnya
+            </button>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Add Bank Modal -->
+  <div id="addBankModal" class="modal-backdrop hidden fixed inset-0 z-50 items-center justify-center p-4">
+    <div class="bg-white rounded-xl shadow-2xl max-w-2xl w-full p-6">
+      <div class="flex items-center justify-between mb-6">
+        <h3 class="text-xl font-bold text-gray-900">Tambah Rekening Bank</h3>
+        <button onclick="closeModal('addBankModal')" class="text-gray-400 hover:text-gray-600">
+          <i data-lucide="x" class="w-6 h-6"></i>
+        </button>
+      </div>
+
+      <form data-submit-message="Rekening bank berhasil ditambahkan!">
+        <div class="space-y-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Nama Bank</label>
+            <select class="block w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500" required>
+              <option value="">Pilih bank</option>
+              <option value="bca">Bank BCA</option>
+              <option value="mandiri">Bank Mandiri</option>
+              <option value="bni">Bank BNI</option>
+              <option value="bri">Bank BRI</option>
+              <option value="bsi">Bank Syariah Indonesia</option>
+              <option value="cimb">Bank CIMB Niaga</option>
+            </select>
+          </div>
+
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Nomor Rekening</label>
+              <input type="text" class="block w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500" placeholder="1234567890" required>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Atas Nama</label>
+              <input type="text" class="block w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500" placeholder="Nama pemilik rekening" required>
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Cabang</label>
+            <input type="text" class="block w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500" placeholder="Contoh: KCP Jakarta Pusat" required>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Status</label>
+            <select class="block w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500" required>
+              <option value="aktif">Aktif</option>
+              <option value="nonaktif">Non-Aktif</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="flex gap-3 mt-6">
+          <button type="button" onclick="closeModal('addBankModal')" class="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition">
+            Batal
+          </button>
+          <button type="submit" class="flex-1 px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition">
+            Simpan
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="../assets/js/data.js"></script>
+  <script src="../assets/js/main.js"></script>
+  <script>
+    // Initialize Lucide icons
+    lucide.createIcons();
+
+    // Initialize search
+    handleSearch('searchInput', 'bankTable');
+  </script>
+</body>
+</html>

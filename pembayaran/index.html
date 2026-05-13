@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pembayaran - Sistem Manajemen Haji & Umroh</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="../assets/css/custom.css">
+</head>
+<body class="bg-gray-50">
+
+  <!-- Sidebar -->
+  <div id="sidebar-container"></div>
+
+  <!-- Main Content -->
+  <div class="lg:ml-64">
+    <!-- Topbar -->
+    <div id="topbar-container"></div>
+
+    <!-- Page Content -->
+    <main class="p-6">
+      <!-- Page Header -->
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
+        <div>
+          <h1 class="text-2xl font-bold text-gray-900 mb-2">Pembayaran Jamaah</h1>
+          <p class="text-sm text-gray-600">Kelola pembayaran dan cicilan jamaah</p>
+        </div>
+        <div class="flex gap-3 mt-4 md:mt-0">
+          <button onclick="openModal('inputPembayaranModal')" class="flex items-center gap-2 px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition">
+            <i data-lucide="plus" class="w-4 h-4"></i>
+            Input Pembayaran
+          </button>
+        </div>
+      </div>
+
+      <!-- Stats Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
+        <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+          <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center justify-center w-12 h-12 bg-green-100 rounded-lg">
+              <i data-lucide="check-circle" class="w-6 h-6 text-green-600"></i>
+            </div>
+          </div>
+          <h3 class="text-2xl font-bold text-gray-900 mb-1">Rp 28,5M</h3>
+          <p class="text-sm text-gray-600">Total Lunas</p>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+          <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center justify-center w-12 h-12 bg-amber-100 rounded-lg">
+              <i data-lucide="clock" class="w-6 h-6 text-amber-600"></i>
+            </div>
+          </div>
+          <h3 class="text-2xl font-bold text-gray-900 mb-1">Rp 41,6M</h3>
+          <p class="text-sm text-gray-600">Sisa Tagihan</p>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+          <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center justify-center w-12 h-12 bg-blue-100 rounded-lg">
+              <i data-lucide="trending-up" class="w-6 h-6 text-blue-600"></i>
+            </div>
+          </div>
+          <h3 class="text-2xl font-bold text-gray-900 mb-1">Rp 2,45M</h3>
+          <p class="text-sm text-gray-600">Bulan Ini</p>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+          <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center justify-center w-12 h-12 bg-red-100 rounded-lg">
+              <i data-lucide="alert-circle" class="w-6 h-6 text-red-600"></i>
+            </div>
+          </div>
+          <h3 class="text-2xl font-bold text-gray-900 mb-1">23</h3>
+          <p class="text-sm text-gray-600">Pending</p>
+        </div>
+      </div>
+
+      <!-- Filters -->
+      <div class="bg-white rounded-xl shadow-sm p-6 mb-6 border border-gray-100">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div class="md:col-span-2">
+            <label class="block text-sm font-medium text-gray-700 mb-2">Cari Jamaah</label>
+            <div class="relative">
+              <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <i data-lucide="search" class="w-5 h-5 text-gray-400"></i>
+              </div>
+              <input
+                type="text"
+                id="searchInput"
+                placeholder="Cari nama jamaah..."
+                class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+              >
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Status</label>
+            <select class="block w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
+              <option value="">Semua Status</option>
+              <option value="lunas">Lunas</option>
+              <option value="cicilan">Cicilan</option>
+              <option value="pending">Pending</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Paket</label>
+            <select class="block w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
+              <option value="">Semua Paket</option>
+              <option value="umroh">Umroh</option>
+              <option value="haji">Haji</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pembayaran Table -->
+      <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="w-full table-striped">
+            <thead class="bg-gray-50 border-b border-gray-200">
+              <tr>
+                <th class="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Jamaah</th>
+                <th class="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Paket</th>
+                <th class="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Total Biaya</th>
+                <th class="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Terbayar</th>
+                <th class="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Sisa</th>
+                <th class="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Status</th>
+                <th class="px-6 py-3 text-right text-xs font-semibold text-gray-700 uppercase tracking-wider">Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="pembayaranTable" class="divide-y divide-gray-200">
+              <!-- Data will be populated by JavaScript -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Pagination -->
+        <div class="px-6 py-4 border-t border-gray-200 flex items-center justify-between">
+          <p class="text-sm text-gray-600">Menampilkan <span class="font-semibold">1-2</span> dari <span class="font-semibold">2</span> pembayaran</p>
+          <div class="flex gap-2">
+            <button class="px-3 py-1 border border-gray-300 rounded-lg text-sm text-gray-700 hover:bg-gray-50 disabled:opacity-50" disabled>
+              Sebelumnya
+            </button>
+            <button class="px-3 py-1 bg-emerald-600 text-white rounded-lg text-sm">1</button>
+            <button class="px-3 py-1 border border-gray-300 rounded-lg text-sm text-gray-700 hover:bg-gray-50 disabled:opacity-50" disabled>
+              Selanjutnya
+            </button>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Input Pembayaran Modal -->
+  <div id="inputPembayaranModal" class="modal-backdrop hidden fixed inset-0 z-50 items-center justify-center p-4">
+    <div class="bg-white rounded-xl shadow-2xl max-w-2xl w-full p-6 max-h-[90vh] overflow-y-auto">
+      <div class="flex items-center justify-between mb-6">
+        <h3 class="text-xl font-bold text-gray-900">Input Pembayaran</h3>
+        <button onclick="closeModal('inputPembayaranModal')" class="text-gray-400 hover:text-gray-600">
+          <i data-lucide="x" class="w-6 h-6"></i>
+        </button>
+      </div>
+
+      <form data-submit-message="Pembayaran berhasil dicatat!">
+        <div class="space-y-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Pilih Jamaah</label>
+            <select class="block w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500" required>
+              <option value="">Pilih jamaah</option>
+              <option value="1">Siti Aminah - Umroh Reguler 12 Hari</option>
+              <option value="2">Muhammad Rizki - Haji Plus 40 Hari</option>
+              <option value="3">Fatimah Zahra - Umroh Ramadhan 15 Hari</option>
+            </select>
+          </div>
+
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Jumlah Pembayaran (Rp)</label>
+              <input type="number" class="block w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500" placeholder="10000000" required>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Tanggal Pembayaran</label>
+              <input type="date" class="block w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500" required>
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Metode Pembayaran</label>
+            <select class="block w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500" required>
+              <option value="">Pilih metode</option>
+              <option value="transfer">Transfer Bank</option>
+              <option value="cash">Tunai</option>
+              <option value="debit">Kartu Debit</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Bank Tujuan</label>
+            <select class="block w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500">
+              <option value="">Pilih bank</option>
+              <option value="bca">BCA</option>
+              <option value="mandiri">Mandiri</option>
+              <option value="bni">BNI</option>
+              <option value="bri">BRI</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Upload Bukti Transfer</label>
+            <div class="file-upload-area border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
+              <i data-lucide="upload-cloud" class="w-10 h-10 text-gray-400 mx-auto mb-2"></i>
+              <p class="text-sm text-gray-600 mb-2">Drag & drop atau klik untuk upload</p>
+              <p class="text-xs text-gray-500">Format: JPG, PNG, PDF (Max 2MB)</p>
+              <input type="file" accept="image/*,.pdf" class="hidden" id="buktiTransfer">
+              <button type="button" onclick="document.getElementById('buktiTransfer').click()" class="mt-3 px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition text-sm">
+                Pilih File
+              </button>
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Catatan</label>
+            <textarea rows="3" class="block w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500" placeholder="Catatan tambahan (opsional)"></textarea>
+          </div>
+        </div>
+
+        <div class="flex gap-3 mt-6">
+          <button type="button" onclick="closeModal('inputPembayaranModal')" class="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition">
+            Batal
+          </button>
+          <button type="submit" class="flex-1 px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition">
+            Simpan
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="../assets/js/data.js"></script>
+  <script src="../assets/js/main.js"></script>
+  <script>
+    // Initialize Lucide icons
+    lucide.createIcons();
+
+    // Populate table
+    function populateTable() {
+      const tbody = document.getElementById('pembayaranTable');
+      tbody.innerHTML = dummyData.pembayaran.map(pembayaran => `
+        <tr>
+          <td class="px-6 py-4">
+            <div class="flex items-center gap-3">
+              <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(pembayaran.jamaahNama)}&background=059669&color=fff" alt="${pembayaran.jamaahNama}" class="w-10 h-10 rounded-full">
+              <div>
+                <p class="font-semibold text-gray-900">${pembayaran.jamaahNama}</p>
+              </div>
+            </div>
+          </td>
+          <td class="px-6 py-4">
+            <p class="text-sm text-gray-900">${pembayaran.paket}</p>
+          </td>
+          <td class="px-6 py-4">
+            <p class="text-sm font-semibold text-gray-900">${formatRupiah(pembayaran.totalBiaya)}</p>
+          </td>
+          <td class="px-6 py-4">
+            <p class="text-sm font-semibold text-green-600">${formatRupiah(pembayaran.terbayar)}</p>
+          </td>
+          <td class="px-6 py-4">
+            <p class="text-sm font-semibold ${pembayaran.sisa > 0 ? 'text-amber-600' : 'text-gray-900'}">${formatRupiah(pembayaran.sisa)}</p>
+          </td>
+          <td class="px-6 py-4">
+            <span class="badge ${
+              pembayaran.status === 'Lunas' ? 'badge-success' :
+              pembayaran.status.includes('Cicilan') ? 'badge-warning' :
+              'badge-danger'
+            }">${pembayaran.status}</span>
+          </td>
+          <td class="px-6 py-4 text-right">
+            <div class="flex items-center justify-end gap-2">
+              <button onclick="openModal('inputPembayaranModal')" class="p-2 text-emerald-600 hover:bg-emerald-50 rounded-lg transition" title="Input Pembayaran">
+                <i data-lucide="plus-circle" class="w-4 h-4"></i>
+              </button>
+              <button class="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition" title="Riwayat">
+                <i data-lucide="history" class="w-4 h-4"></i>
+              </button>
+              <button class="p-2 text-gray-600 hover:bg-gray-50 rounded-lg transition" title="Cetak">
+                <i data-lucide="printer" class="w-4 h-4"></i>
+              </button>
+            </div>
+          </td>
+        </tr>
+      `).join('');
+      lucide.createIcons();
+    }
+
+    // Initialize
+    populateTable();
+    handleSearch('searchInput', 'pembayaranTable');
+  </script>
+</body>
+</html>
