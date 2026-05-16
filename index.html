@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,7 +12,8 @@
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet">
 
   <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
@@ -23,6 +25,7 @@
     .bg-overlay {
       background: linear-gradient(135deg, rgba(15, 23, 42, 0.9) 0%, rgba(30, 58, 138, 0.8) 100%) !important;
     }
+
     .full-bg {
       background-image: url('assets/img/bg.png') !important;
       background-size: cover !important;
@@ -71,9 +74,15 @@
 
     /* Custom Animations */
     @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
     }
+
     .spinner-pro {
       border: 2px solid rgba(255, 255, 255, 0.3) !important;
       border-top: 2px solid white !important;
@@ -85,8 +94,9 @@
     }
   </style>
 </head>
+
 <body class="min-h-screen flex items-center justify-center full-bg relative py-8 md:py-12">
-  
+
   <!-- Overlay -->
   <div class="absolute inset-0 bg-overlay z-0"></div>
   <div class="absolute inset-0 islamic-mesh opacity-20 z-10"></div>
@@ -94,8 +104,10 @@
   <div class="w-full max-w-lg px-6 relative z-20 reveal">
     <!-- Logo & Title -->
     <div class="text-center mb-10">
-      <div class="inline-flex items-center justify-center w-32 h-32 bg-white/10 backdrop-blur-md rounded-[2.5rem] border border-white/20 shadow-2xl mb-6 mx-auto transition-transform hover:scale-110 duration-500 overflow-hidden p-1 group">
-        <img src="assets/img/logo.png" alt="Logo" class="w-full h-full object-contain scale-110 group-hover:scale-125 transition-transform duration-500">
+      <div
+        class="inline-flex items-center justify-center w-32 h-32 bg-white/10 backdrop-blur-md rounded-[2.5rem] border border-white/20 shadow-2xl mb-6 mx-auto transition-transform hover:scale-110 duration-500 overflow-hidden p-1 group">
+        <img src="assets/img/logo.png" alt="Logo"
+          class="w-full h-full object-contain scale-110 group-hover:scale-125 transition-transform duration-500">
       </div>
       <h1 class="text-4xl font-extrabold text-white tracking-tight mb-2">Sistem Manajemen</h1>
       <div class="flex items-center justify-center gap-3">
@@ -117,18 +129,13 @@
         <div class="space-y-2">
           <label for="email" class="text-sm font-semibold text-slate-700 ml-1">Email Address</label>
           <div class="relative group">
-            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none transition-colors group-focus-within:text-blue-600 text-slate-400">
+            <div
+              class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none transition-colors group-focus-within:text-blue-600 text-slate-400">
               <i data-lucide="mail" class="w-5 h-5"></i>
             </div>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              value="ahmad.fauzi@hajjumroh.com"
+            <input type="email" id="email" name="email" value="ahmad.fauzi@hajjumroh.com"
               class="form-input block w-full pl-12 pr-4 py-4 text-slate-900 placeholder:text-slate-400"
-              placeholder="nama@email.com"
-              required
-            >
+              placeholder="nama@email.com" required>
           </div>
         </div>
 
@@ -136,26 +143,20 @@
         <div class="space-y-2">
           <div class="flex items-center justify-between ml-1">
             <label for="password" class="text-sm font-semibold text-slate-700">Password</label>
-            <a href="#" class="text-xs font-bold text-blue-600 hover:text-blue-700 transition-colors uppercase tracking-wider">Lupa Password?</a>
+            <a href="#"
+              class="text-xs font-bold text-blue-600 hover:text-blue-700 transition-colors uppercase tracking-wider">Lupa
+              Password?</a>
           </div>
           <div class="relative group">
-            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none transition-colors group-focus-within:text-blue-600 text-slate-400">
+            <div
+              class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none transition-colors group-focus-within:text-blue-600 text-slate-400">
               <i data-lucide="lock" class="w-5 h-5"></i>
             </div>
-            <input
-              type="password"
-              id="password"
-              name="password"
-              value="password123"
+            <input type="password" id="password" name="password" value="password123"
               class="form-input block w-full pl-12 pr-12 py-4 text-slate-900 placeholder:text-slate-400"
-              placeholder="••••••••"
-              required
-            >
-            <button
-              type="button"
-              onclick="togglePassword()"
-              class="absolute inset-y-0 right-0 pr-4 flex items-center text-slate-400 hover:text-blue-600 transition-colors"
-            >
+              placeholder="••••••••" required>
+            <button type="button" onclick="togglePassword()"
+              class="absolute inset-y-0 right-0 pr-4 flex items-center text-slate-400 hover:text-blue-600 transition-colors">
               <i data-lucide="eye" id="eyeIcon" class="w-5 h-5"></i>
             </button>
           </div>
@@ -163,22 +164,16 @@
 
         <!-- Remember Me -->
         <div class="flex items-center ml-1">
-          <input
-            id="remember"
-            name="remember"
-            type="checkbox"
-            class="h-5 w-5 text-blue-600 focus:ring-blue-500 border-slate-300 rounded-md transition-all cursor-pointer"
-          >
+          <input id="remember" name="remember" type="checkbox"
+            class="h-5 w-5 text-blue-600 focus:ring-blue-500 border-slate-300 rounded-md transition-all cursor-pointer">
           <label for="remember" class="ml-3 block text-sm font-medium text-slate-600 cursor-pointer">
             Biarkan saya tetap masuk
           </label>
         </div>
 
         <!-- Submit Button -->
-        <button
-          type="submit"
-          class="w-full btn-premium py-4 px-6 rounded-xl text-lg font-bold shadow-2xl transition-all active:scale-[0.98]"
-        >
+        <button type="submit"
+          class="w-full btn-premium py-4 px-6 rounded-xl text-lg font-bold shadow-2xl transition-all active:scale-[0.98]">
           <div class="flex items-center justify-center gap-3" id="btnContent">
             <span>Masuk ke Sistem</span>
             <i data-lucide="arrow-right" class="w-5 h-5"></i>
@@ -205,7 +200,7 @@
     <!-- Footer -->
     <div class="text-center mt-10">
       <p class="text-white/40 text-xs font-medium uppercase tracking-[0.3em]">
-        © 2026 TEPE.GRAFI - Sistem Operasional Haji & Umroh
+        © 2026 GEMALA.DEV - Sistem ON DEMO
       </p>
     </div>
   </div>
@@ -230,12 +225,12 @@
     }
 
     // Handle login
-    document.getElementById('loginForm').addEventListener('submit', function(e) {
+    document.getElementById('loginForm').addEventListener('submit', function (e) {
       e.preventDefault();
 
       const btnContent = document.getElementById('btnContent');
       const originalContent = btnContent.innerHTML;
-      
+
       // Loading State
       btnContent.innerHTML = '<div class="spinner-pro"></div><span class="text-sm font-medium tracking-widest uppercase">Memverifikasi...</span>';
       this.querySelector('button').disabled = true;
@@ -247,5 +242,5 @@
     });
   </script>
 </body>
-</html>
 
+</html>
