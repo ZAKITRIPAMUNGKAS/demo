@@ -70,15 +70,7 @@ function getSidebarHTML(prefix) {
         <span>Data Jamaah</span>
       </a>
 
-      <a href="${excelFile}" download class="nav-item group mt-4 border border-white/5 hover:border-amber-500/30 bg-amber-500/5">
-        <div class="p-2 rounded-lg bg-amber-500/10 flex-shrink-0">
-          <i data-lucide="file-spreadsheet" class="w-4 h-4 text-amber-400"></i>
-        </div>
-        <div class="flex items-center gap-2 flex-1">
-          <span class="text-amber-200">Mapping Hotel</span>
-          <span class="px-1.5 py-0.5 bg-amber-500/20 text-amber-400 text-[9px] font-bold rounded uppercase">.xlsx</span>
-        </div>
-      </a>
+
     </nav>
 
     <!-- User Profile -->
