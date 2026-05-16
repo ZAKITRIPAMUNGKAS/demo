@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Data Jamaah | Manajemen Hotel Haji & Umroh</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
+  <link rel="stylesheet" href="../assets/css/custom.css">
+</head>
+<body class="bg-premium min-h-screen">
+  <div id="sidebar-container"></div>
+  <div class="lg:ml-72 min-h-screen flex flex-col">
+    <div id="topbar-container"></div>
+    <main class="p-8 flex-1">
+
+      <!-- Header -->
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-8 gap-4">
+        <div>
+          <h1 class="text-3xl font-bold text-slate-900 tracking-tight mb-1">Data Jamaah</h1>
+          <p class="text-slate-500 font-medium">NIK sebagai ID unik. Upload Excel untuk import massal — data sama akan otomatis overwrite.</p>
+        </div>
+        <div class="flex items-center gap-3">
+          <button onclick="document.getElementById('excelInput').click()" class="flex items-center gap-2 px-4 py-2.5 bg-white border border-slate-200 text-slate-700 rounded-xl hover:bg-slate-50 transition font-bold text-sm shadow-sm">
+            <i data-lucide="upload" class="w-4 h-4 text-blue-600"></i>
+            Upload Excel
+          </button>
+          <input type="file" id="excelInput" accept=".xlsx,.xls" class="hidden" onchange="importJamaahExcel(event)">
+          <button onclick="openModal('addJamaahModal')" class="btn-pro flex items-center gap-2.5 shadow-sm">
+            <i data-lucide="user-plus" class="w-4 h-4"></i>
+            Tambah Manual
+          </button>
+        </div>
+      </div>
+
+      <!-- Import Result Banner -->
+      <div id="importBanner" class="hidden pro-card p-5 mb-6 bg-blue-50 border border-blue-200">
+        <div class="flex items-center gap-4">
+          <div class="p-2.5 bg-blue-100 rounded-xl"><i data-lucide="check-circle" class="w-5 h-5 text-blue-700"></i></div>
+          <div class="flex-1">
+            <p class="text-sm font-bold text-blue-900" id="importMsg"></p>
+            <p class="text-xs text-blue-700 mt-0.5" id="importDetail"></p>
+          </div>
+          <button onclick="document.getElementById('importBanner').classList.add('hidden')" class="text-blue-600 hover:text-blue-800">
+            <i data-lucide="x" class="w-4 h-4"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Template Info -->
+      <div class="pro-card p-5 mb-6 border border-blue-100 bg-blue-50/50">
+        <div class="flex items-start gap-3">
+          <i data-lucide="info" class="w-5 h-5 text-blue-500 flex-shrink-0 mt-0.5"></i>
+          <div>
+            <p class="text-sm font-bold text-blue-900">Format Excel yang diharapkan:</p>
+            <p class="text-xs text-blue-700 mt-1">Kolom: <span class="font-mono font-bold">NIK | Nama | Gender | No HP | Kode Keberangkatan | Paket | Room Type</span></p>
+            <p class="text-xs text-blue-600 mt-0.5">NIK berfungsi sebagai ID unik — jika NIK sudah ada, data akan dioverwrite (bukan duplikat).</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Search & Filter -->
+      <div class="pro-card p-5 mb-6 flex flex-col md:flex-row gap-4 items-start md:items-center">
+        <div class="relative flex-1">
+          <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2"></i>
+          <input type="text" id="searchInput" placeholder="Cari nama, NIK, atau kode keberangkatan..."
+            class="w-full pl-11 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10"
+            oninput="renderTable()">
+        </div>
+        <select id="filterKb" onchange="renderTable()"
+          class="px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium focus:outline-none focus:border-blue-500 text-slate-700">
+          <option value="">Semua Keberangkatan</option>
+        </select>
+        <select id="filterPaket" onchange="renderTable()"
+          class="px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium focus:outline-none focus:border-blue-500 text-slate-700">
+          <option value="">Semua Paket</option>
+          <option value="M">Economy (M)</option>
+          <option value="S">Standard (S)</option>
+          <option value="SF">Full Fasilitas (SF)</option>
+          <option value="SAF">Super Full (SAF)</option>
+        </select>
+        <div class="text-sm font-bold text-slate-500" id="countLabel"></div>
+      </div>
+
+      <!-- Table -->
+      <div class="pro-card overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="w-full">
+            <thead>
+              <tr class="bg-slate-50 border-b border-slate-100">
+                <th class="px-6 py-4 text-left text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em]">NIK</th>
+                <th class="px-6 py-4 text-left text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em]">Nama</th>
+                <th class="px-6 py-4 text-left text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em]">Gender</th>
+                <th class="px-6 py-4 text-left text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em]">Keberangkatan</th>
+                <th class="px-6 py-4 text-left text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em]">Paket</th>
+                <th class="px-6 py-4 text-left text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em]">Room Type</th>
+                <th class="px-6 py-4 text-left text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em]">Sumber</th>
+              </tr>
+            </thead>
+            <tbody id="jamaahTable" class="divide-y divide-slate-50"></tbody>
+          </table>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- ADD JAMAAH MODAL -->
+  <div id="addJamaahModal" class="modal-backdrop hidden fixed inset-0 z-50 items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
+    <div class="bg-white rounded-3xl shadow-2xl max-w-xl w-full p-8">
+      <div class="flex items-center justify-between mb-6">
+        <h3 class="text-xl font-bold text-slate-900 tracking-tight">Tambah Jamaah</h3>
+        <button onclick="closeModal('addJamaahModal')" class="p-2 text-slate-400 hover:text-slate-600 rounded-xl"><i data-lucide="x" class="w-5 h-5"></i></button>
+      </div>
+      <div class="space-y-4">
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-bold text-slate-700 mb-2">NIK <span class="text-red-500">*</span></label>
+            <input type="text" id="jNIK" maxlength="16" placeholder="16 digit NIK..."
+              class="block w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none focus:border-blue-500">
+          </div>
+          <div>
+            <label class="block text-sm font-bold text-slate-700 mb-2">Nama Lengkap <span class="text-red-500">*</span></label>
+            <input type="text" id="jNama" placeholder="Nama sesuai paspor..."
+              class="block w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none focus:border-blue-500">
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-bold text-slate-700 mb-2">Gender</label>
+            <select id="jGender" class="block w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none focus:border-blue-500">
+              <option value="Laki-laki">Laki-laki</option>
+              <option value="Perempuan">Perempuan</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm font-bold text-slate-700 mb-2">No. HP</label>
+            <input type="text" id="jHP" placeholder="08xxxxxxxxxx..."
+              class="block w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none focus:border-blue-500">
+          </div>
+        </div>
+        <div>
+          <label class="block text-sm font-bold text-slate-700 mb-2">Keberangkatan <span class="text-red-500">*</span></label>
+          <select id="jKB" class="block w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none focus:border-blue-500">
+            <option value="">Pilih keberangkatan...</option>
+          </select>
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-bold text-slate-700 mb-2">Paket</label>
+            <select id="jPaket" class="block w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none focus:border-blue-500">
+              <option value="M">Economy (M)</option>
+              <option value="S">Standard (S)</option>
+              <option value="SF">Full Fasilitas (SF)</option>
+              <option value="SAF">Super Full (SAF)</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm font-bold text-slate-700 mb-2">Room Type</label>
+            <select id="jRoomType" class="block w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none focus:border-blue-500">
+              <option value="Quad">Quad (4 orang)</option>
+              <option value="Triple">Triple (3 orang)</option>
+              <option value="Double">Double (2 orang)</option>
+            </select>
+          </div>
+        </div>
+        <div class="flex gap-3 pt-2">
+          <button onclick="closeModal('addJamaahModal')" class="flex-1 px-4 py-3 border border-slate-200 text-slate-700 rounded-xl hover:bg-slate-50 text-sm font-semibold">Batal</button>
+          <button onclick="addJamaahManual()" class="btn-pro flex-1 justify-center py-3 text-sm">Simpan</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="../assets/js/data.js"></script>
+  <script src="../assets/js/main.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      lucide.createIcons();
+      // Populate keberangkatan dropdown
+      const kbSelects = document.querySelectorAll('#filterKb, #jKB');
+      dummyData.keberangkatan.forEach(k => {
+        kbSelects.forEach(s => {
+          if (s.id === 'filterKb') s.innerHTML += `<option value="${k.kode}">${k.kode}</option>`;
+          else s.innerHTML += `<option value="${k.id}">${k.kode} — ${k.tanggalBerangkat}</option>`;
+        });
+      });
+    });
+
+    const paketMap = { M:'Economy (M)', S:'Standard (S)', SF:'Full Fasilitas (SF)', SAF:'Super Full (SAF)' };
+    const paketColors = { M:'bg-slate-100 text-slate-700', S:'bg-blue-100 text-blue-700', SF:'bg-blue-100 text-blue-700', SAF:'bg-amber-100 text-amber-700' };
+    const genderColors = { 'Laki-laki':'bg-blue-50 text-blue-700', 'Perempuan':'bg-pink-50 text-pink-700' };
+
+    function renderTable() {
+      const search = document.getElementById('searchInput').value.toLowerCase();
+      const kb = document.getElementById('filterKb').value;
+      const paket = document.getElementById('filterPaket').value;
+
+      const filtered = dummyData.jamaah.filter(j =>
+        (!search || j.nama.toLowerCase().includes(search) || j.nik.includes(search) || j.keberangkatanKode.toLowerCase().includes(search)) &&
+        (!kb || j.keberangkatanKode === kb) &&
+        (!paket || j.paket === paket)
+      );
+
+      document.getElementById('countLabel').textContent = `${filtered.length} jamaah`;
+      document.getElementById('jamaahTable').innerHTML = filtered.length === 0 ?
+        `<tr><td colspan="7" class="px-6 py-16 text-center text-slate-400 font-medium">Tidak ada data jamaah</td></tr>` :
+        filtered.map(j => `
+          <tr class="hover:bg-slate-50/50 transition-colors">
+            <td class="px-6 py-4">
+              <p class="text-sm font-bold tracking-tight-data text-slate-900 font-mono">${j.nik}</p>
+            </td>
+            <td class="px-6 py-4">
+              <p class="text-sm font-bold text-slate-900">${j.nama}</p>
+              ${j.noHp ? `<p class="text-xs text-slate-400">${j.noHp}</p>` : ''}
+            </td>
+            <td class="px-6 py-4">
+              <span class="badge ${genderColors[j.gender]||'badge-secondary'} text-[10px]">${j.gender}</span>
+            </td>
+            <td class="px-6 py-4">
+              <p class="text-sm font-bold text-slate-800">${j.keberangkatanKode}</p>
+            </td>
+            <td class="px-6 py-4">
+              <span class="badge ${paketColors[j.paket]||'badge-secondary'}">${paketMap[j.paket]||j.paket}</span>
+            </td>
+            <td class="px-6 py-4">
+              <span class="badge badge-secondary">${j.roomType}</span>
+            </td>
+            <td class="px-6 py-4">
+              ${j.importedFrom
+                ? `<div class="flex items-center gap-1.5"><i data-lucide="file-spreadsheet" class="w-3.5 h-3.5 text-blue-500"></i><p class="text-xs text-slate-500">${j.importedFrom}</p></div>`
+                : '<p class="text-xs text-slate-400">Manual</p>'
+              }
+            </td>
+          </tr>
+        `).join('');
+      lucide.createIcons();
+    }
+
+    function importJamaahExcel(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const workbook = XLSX.read(new Uint8Array(e.target.result), { type: 'array' });
+          const rows = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]], { header: 1, defval: '' });
+          // Expected: NIK | Nama | Gender | No HP | Kode Keberangkatan | Paket | Room Type
+          let added = 0, overwritten = 0;
+          rows.slice(1).forEach(row => {
+            const nik = String(row[0] || '').trim();
+            if (!nik) return;
+            const kbKode = String(row[4] || '').trim();
+            const kb = dummyData.keberangkatan.find(k => k.kode === kbKode);
+            const newData = {
+              nik,
+              nama: String(row[1] || '').trim(),
+              gender: String(row[2] || 'Laki-laki').trim(),
+              noHp: String(row[3] || '').trim(),
+              keberangkatanId: kb?.id || null,
+              keberangkatanKode: kbKode,
+              paket: String(row[5] || 'M').trim().toUpperCase(),
+              roomType: String(row[6] || 'Quad').trim(),
+              importedFrom: file.name
+            };
+
+            const existingIdx = dummyData.jamaah.findIndex(j => j.nik === nik);
+            if (existingIdx >= 0) {
+              dummyData.jamaah[existingIdx] = { ...dummyData.jamaah[existingIdx], ...newData };
+              overwritten++;
+            } else {
+              dummyData.jamaah.push({ id: dummyData.jamaah.length + 1, createdAt: new Date().toISOString().split('T')[0], ...newData });
+              added++;
+            }
+          });
+
+          const banner = document.getElementById('importBanner');
+          banner.classList.remove('hidden');
+          document.getElementById('importMsg').textContent = `Import berhasil dari "${file.name}"`;
+          document.getElementById('importDetail').textContent = `${added} data baru ditambahkan, ${overwritten} data dioverwrite berdasarkan NIK.`;
+          renderTable();
+        } catch(err) {
+          showToast('Gagal membaca file Excel!', 'error');
+        }
+      };
+      reader.readAsArrayBuffer(file);
+      event.target.value = '';
+    }
+
+    function addJamaahManual() {
+      const nik = document.getElementById('jNIK').value.trim();
+      const nama = document.getElementById('jNama').value.trim();
+      if (!nik || !nama) { showToast('NIK dan Nama wajib diisi!', 'error'); return; }
+      if (nik.length !== 16) { showToast('NIK harus 16 digit!', 'error'); return; }
+
+      const kbId = parseInt(document.getElementById('jKB').value);
+      const kb = dummyData.keberangkatan.find(k => k.id === kbId);
+      const existingIdx = dummyData.jamaah.findIndex(j => j.nik === nik);
+      const data = {
+        nik, nama,
+        gender: document.getElementById('jGender').value,
+        noHp: document.getElementById('jHP').value,
+        keberangkatanId: kbId || null,
+        keberangkatanKode: kb?.kode || '',
+        paket: document.getElementById('jPaket').value,
+        roomType: document.getElementById('jRoomType').value,
+        importedFrom: null,
+        createdAt: new Date().toISOString().split('T')[0]
+      };
+
+      if (existingIdx >= 0) {
+        dummyData.jamaah[existingIdx] = { ...dummyData.jamaah[existingIdx], ...data };
+        showToast(`Data jamaah dengan NIK ${nik} diperbarui (overwrite).`, 'warning');
+      } else {
+        dummyData.jamaah.push({ id: dummyData.jamaah.length + 1, ...data });
+        showToast(`Jamaah "${nama}" berhasil ditambahkan!`, 'success');
+      }
+
+      closeModal('addJamaahModal');
+      renderTable();
+    }
+
+    renderTable();
+  </script>
+</body>
+</html>

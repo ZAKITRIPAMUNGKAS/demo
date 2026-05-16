@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hotel & Kamar | Manajemen Hotel Haji & Umroh</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
+  <link rel="stylesheet" href="../assets/css/custom.css">
+</head>
+<body class="bg-premium min-h-screen">
+  <div id="sidebar-container"></div>
+  <div class="lg:ml-72 min-h-screen flex flex-col">
+    <div id="topbar-container"></div>
+    <main class="p-8 flex-1">
+
+      <!-- Header -->
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-8 gap-4">
+        <div>
+          <h1 class="text-3xl font-bold text-slate-900 tracking-tight mb-1">Hotel & Kamar</h1>
+          <p class="text-slate-500 font-medium">Master data hotel beserta inventory kamar. Upload Excel untuk import data massal.</p>
+        </div>
+        <div class="flex items-center gap-3">
+          <button onclick="document.getElementById('excelInput').click()" class="flex items-center gap-2 px-4 py-2.5 bg-white border border-slate-200 text-slate-700 rounded-xl hover:bg-slate-50 transition font-bold text-sm shadow-sm">
+            <i data-lucide="file-spreadsheet" class="w-4 h-4 text-amber-500"></i>
+            Import Excel
+          </button>
+          <input type="file" id="excelInput" accept=".xlsx,.xls" class="hidden" onchange="importExcel(event)">
+          <button onclick="openModal('addHotelModal')" class="btn-pro flex items-center gap-2.5 shadow-sm">
+            <i data-lucide="plus" class="w-4 h-4"></i>
+            Tambah Hotel
+          </button>
+        </div>
+      </div>
+
+      <!-- Hotel Cards -->
+      <div id="hotelList" class="space-y-6"></div>
+
+    </main>
+  </div>
+
+  <!-- ADD HOTEL MODAL -->
+  <div id="addHotelModal" class="modal-backdrop hidden fixed inset-0 z-50 items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
+    <div class="bg-white rounded-3xl shadow-2xl max-w-xl w-full p-8">
+      <div class="flex items-center justify-between mb-6">
+        <h3 class="text-xl font-bold text-slate-900 tracking-tight">Tambah Hotel Baru</h3>
+        <button onclick="closeModal('addHotelModal')" class="p-2 text-slate-400 hover:text-slate-600 rounded-xl"><i data-lucide="x" class="w-5 h-5"></i></button>
+      </div>
+      <div class="space-y-4">
+        <div>
+          <label class="block text-sm font-bold text-slate-700 mb-2">Nama Hotel <span class="text-red-500">*</span></label>
+          <input type="text" id="hNama" placeholder="Nama hotel..." class="block w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none focus:border-blue-500">
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-bold text-slate-700 mb-2">Kota</label>
+            <select id="hKota" class="block w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none focus:border-blue-500">
+              <option value="Mekkah">Mekkah</option>
+              <option value="Madinah">Madinah</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm font-bold text-slate-700 mb-2">Bintang</label>
+            <select id="hBintang" class="block w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none focus:border-blue-500">
+              <option value="3">3 Bintang</option>
+              <option value="4">4 Bintang</option>
+              <option value="5" selected>5 Bintang</option>
+            </select>
+          </div>
+        </div>
+        <div>
+          <label class="block text-sm font-bold text-slate-700 mb-2">Alamat</label>
+          <input type="text" id="hAlamat" placeholder="Alamat hotel..." class="block w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none focus:border-blue-500">
+        </div>
+        <div>
+          <label class="block text-sm font-bold text-slate-700 mb-2">Jarak ke Masjidil Haram</label>
+          <input type="text" id="hJarak" placeholder="misal: 200m" class="block w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none focus:border-blue-500">
+        </div>
+        <div class="flex gap-3 pt-2">
+          <button onclick="closeModal('addHotelModal')" class="flex-1 px-4 py-3 border border-slate-200 text-slate-700 rounded-xl hover:bg-slate-50 text-sm font-semibold">Batal</button>
+          <button onclick="addHotel()" class="btn-pro flex-1 justify-center py-3 text-sm">Simpan Hotel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADD ROOM MODAL -->
+  <div id="addRoomModal" class="modal-backdrop hidden fixed inset-0 z-50 items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
+    <div class="bg-white rounded-3xl shadow-2xl max-w-md w-full p-8">
+      <div class="flex items-center justify-between mb-6">
+        <h3 class="text-xl font-bold text-slate-900 tracking-tight">Tambah Kamar</h3>
+        <button onclick="closeModal('addRoomModal')" class="p-2 text-slate-400 hover:text-slate-600 rounded-xl"><i data-lucide="x" class="w-5 h-5"></i></button>
+      </div>
+      <input type="hidden" id="roomHotelId">
+      <div class="space-y-4">
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-bold text-slate-700 mb-2">No. Kamar</label>
+            <input type="text" id="rNo" placeholder="101" class="block w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none focus:border-blue-500">
+          </div>
+          <div>
+            <label class="block text-sm font-bold text-slate-700 mb-2">Tipe Kamar</label>
+            <select id="rType" class="block w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none focus:border-blue-500">
+              <option value="Quad">Quad (4 orang)</option>
+              <option value="Triple">Triple (3 orang)</option>
+              <option value="Double">Double (2 orang)</option>
+              <option value="Single">Single (1 orang)</option>
+            </select>
+          </div>
+        </div>
+        <div>
+          <label class="block text-sm font-bold text-slate-700 mb-2">Lantai</label>
+          <input type="number" id="rLantai" placeholder="1" min="1" class="block w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none focus:border-blue-500">
+        </div>
+        <div class="flex gap-3 pt-2">
+          <button onclick="closeModal('addRoomModal')" class="flex-1 px-4 py-3 border border-slate-200 text-slate-700 rounded-xl hover:bg-slate-50 text-sm font-semibold">Batal</button>
+          <button onclick="addRoom()" class="btn-pro flex-1 justify-center py-3 text-sm">Tambah Kamar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="../assets/js/data.js"></script>
+  <script src="../assets/js/main.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => lucide.createIcons());
+    const today = new Date().toISOString().split('T')[0];
+    const kotaColors = { Mekkah: 'bg-blue-100 text-blue-700', Madinah: 'bg-blue-100 text-blue-700' };
+    const typeIcons = { Quad: 'users', Triple: 'user-round', Double: 'users-round', Single: 'user' };
+
+    function renderHotels() {
+      document.getElementById('hotelList').innerHTML = dummyData.hotels.map(hotel => {
+        // Summarize rooms by type
+        const roomSummary = {};
+        hotel.rooms.forEach(r => { roomSummary[r.roomType] = (roomSummary[r.roomType] || 0) + 1; });
+
+        // Check today's occupancy
+        const pct = getHotelOccupancyOnDate(hotel.id, today);
+        const pctColor = pct >= 85 ? 'text-red-600 bg-red-50' : pct >= 60 ? 'text-amber-600 bg-amber-50' : 'text-blue-600 bg-blue-50';
+        const barColor = pct >= 85 ? 'bg-red-500' : pct >= 60 ? 'bg-amber-500' : 'bg-blue-500';
+
+        return `
+          <div class="pro-card overflow-hidden">
+            <!-- Hotel Header -->
+            <div class="px-8 py-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4 border-b border-slate-100 bg-slate-50/30">
+              <div class="flex items-center gap-5">
+                <div class="p-3.5 bg-slate-900 rounded-xl flex-shrink-0 shadow-sm">
+                  <i data-lucide="building-2" class="w-6 h-6 text-white"></i>
+                </div>
+                <div>
+                  <div class="flex items-center gap-3 flex-wrap">
+                    <h3 class="text-lg font-bold text-slate-900 tracking-tight">${hotel.nama}</h3>
+                    <span class="badge ${kotaColors[hotel.kota]||''}">${hotel.kota}</span>
+                    <span class="text-amber-500 text-sm font-bold">${'★'.repeat(hotel.bintang)}</span>
+                  </div>
+                  <p class="text-sm text-slate-500 mt-1">${hotel.alamat}</p>
+                  ${hotel.jarakHaram ? `<p class="text-[10px] font-bold text-slate-400 mt-1 tracking-micro uppercase">Jarak ke Masjidil Haram: ${hotel.jarakHaram}</p>` : ''}
+                </div>
+              </div>
+              <div class="flex items-center gap-4">
+                <div class="text-right">
+                  <p class="text-[9px] text-slate-400 tracking-micro uppercase">Ocupansi Hari Ini</p>
+                  <div class="flex items-center gap-2 mt-1">
+                    <div class="w-24 h-2 bg-slate-200 rounded-full overflow-hidden">
+                      <div class="h-full ${barColor} rounded-full" style="width:${pct}%"></div>
+                    </div>
+                    <span class="text-sm font-bold tracking-tight-data ${pct >= 85 ? 'text-red-600' : pct >= 60 ? 'text-amber-600' : 'text-blue-600'}">${pct}%</span>
+                  </div>
+                </div>
+                <button onclick="openAddRoomModal(${hotel.id})" class="flex items-center gap-1.5 px-3 py-2 bg-slate-900 text-white rounded-xl text-xs font-bold hover:bg-slate-800 transition shadow-sm">
+                  <i data-lucide="plus" class="w-3.5 h-3.5"></i> Kamar
+                </button>
+              </div>
+            </div>
+
+            <!-- Room Summary -->
+            <div class="px-8 py-5 bg-white">
+              <div class="flex items-center gap-3 mb-4">
+                <p class="text-[9px] font-bold text-slate-400 uppercase tracking-micro">Inventory Kamar — ${hotel.rooms.length} Unit Total</p>
+              </div>
+              <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-5">
+                ${Object.entries(roomSummary).map(([type, count]) => `
+                  <div class="bg-slate-50 rounded-2xl p-4 border border-slate-100 hover:border-slate-200 transition-colors">
+                    <div class="flex items-center gap-2 mb-2">
+                      <i data-lucide="${typeIcons[type]||'bed'}" class="w-4 h-4 text-slate-400"></i>
+                      <p class="text-[9px] font-bold text-slate-500 uppercase tracking-micro">${type}</p>
+                    </div>
+                    <p class="text-2xl font-bold text-slate-900 tracking-tight-data">${count}</p>
+                    <p class="text-[10px] text-slate-400 mt-0.5">unit kamar</p>
+                  </div>
+                `).join('')}
+              </div>
+
+              <!-- Room List (Expandable) -->
+              <details class="group">
+                <summary class="flex items-center gap-2 cursor-pointer text-sm font-bold text-slate-600 hover:text-slate-900 transition select-none list-none">
+                  <i data-lucide="chevron-right" class="w-4 h-4 group-open:rotate-90 transition-transform"></i>
+                  Lihat Detail Semua Kamar (${hotel.rooms.length})
+                </summary>
+                <div class="mt-4 grid grid-cols-2 md:grid-cols-5 gap-2">
+                  ${hotel.rooms.map(r => {
+                    const aktifHariIni = getActiveReservasiOnDate(today, hotel.id).some(res => res.roomType === r.roomType);
+                    return `
+                      <div class="flex items-center gap-2 p-2.5 rounded-xl border ${aktifHariIni ? 'bg-red-50 border-red-100' : 'bg-white border-slate-100 hover:bg-slate-50'} text-sm transition-colors">
+                        <span class="text-xs font-bold text-slate-700 tracking-tight-data">${r.noKamar}</span>
+                        <span class="text-[9px] font-bold text-slate-400 uppercase tracking-micro">${r.roomType}</span>
+                        ${aktifHariIni ? '<span class="ml-auto w-2 h-2 rounded-full bg-red-500 flex-shrink-0 animate-pulse"></span>' : '<span class="ml-auto w-2 h-2 rounded-full bg-blue-400 flex-shrink-0"></span>'}
+                      </div>
+                    `;
+                  }).join('')}
+                </div>
+                <p class="text-[10px] text-slate-400 mt-3 font-medium">
+                  <span class="inline-flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-blue-400 inline-block"></span>Tersedia</span>
+                  &nbsp;&nbsp;<span class="inline-flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-red-500 inline-block"></span>Sedang dipesan hari ini</span>
+                </p>
+              </details>
+            </div>
+          </div>
+        `;
+      }).join('');
+      lucide.createIcons();
+    }
+
+    function openAddRoomModal(hotelId) {
+      document.getElementById('roomHotelId').value = hotelId;
+      document.getElementById('rNo').value = '';
+      document.getElementById('rLantai').value = '';
+      openModal('addRoomModal');
+    }
+
+    function addHotel() {
+      const nama = document.getElementById('hNama').value.trim();
+      if (!nama) { showToast('Nama hotel wajib diisi!', 'error'); return; }
+      dummyData.hotels.push({
+        id: dummyData.hotels.length + 1,
+        nama,
+        kota: document.getElementById('hKota').value,
+        bintang: parseInt(document.getElementById('hBintang').value),
+        alamat: document.getElementById('hAlamat').value,
+        jarakHaram: document.getElementById('hJarak').value,
+        totalKamar: 0,
+        rooms: []
+      });
+      closeModal('addHotelModal');
+      showToast(`Hotel "${nama}" berhasil ditambahkan!`, 'success');
+      renderHotels();
+    }
+
+    function addRoom() {
+      const hotelId = parseInt(document.getElementById('roomHotelId').value);
+      const hotel = dummyData.hotels.find(h => h.id === hotelId);
+      const noKamar = document.getElementById('rNo').value.trim();
+      if (!noKamar) { showToast('Nomor kamar wajib diisi!', 'error'); return; }
+      const type = document.getElementById('rType').value;
+      const kapasitas = type === 'Quad' ? 4 : type === 'Triple' ? 3 : type === 'Double' ? 2 : 1;
+      hotel.rooms.push({
+        id: `R${hotelId}-${hotel.rooms.length+1}`,
+        noKamar,
+        roomType: type,
+        kapasitas,
+        lantai: parseInt(document.getElementById('rLantai').value) || 1
+      });
+      hotel.totalKamar = hotel.rooms.length;
+      closeModal('addRoomModal');
+      showToast(`Kamar ${noKamar} (${type}) ditambahkan ke ${hotel.nama}!`, 'success');
+      renderHotels();
+    }
+
+    function importExcel(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const workbook = XLSX.read(new Uint8Array(e.target.result), { type: 'array' });
+          const sheet = workbook.Sheets[workbook.SheetNames[0]];
+          const rows = XLSX.utils.sheet_to_json(sheet, { header: 1, defval: '' });
+          // Expected cols: Nama Hotel | Kota | No Kamar | Tipe | Lantai
+          let added = 0;
+          rows.slice(1).forEach(row => {
+            if (!row[0]) return;
+            let hotel = dummyData.hotels.find(h => h.nama.toLowerCase() === String(row[0]).toLowerCase());
+            if (!hotel) {
+              hotel = { id: dummyData.hotels.length + 1, nama: row[0], kota: row[1] || 'Mekkah', bintang: 4, alamat: '', jarakHaram: '', totalKamar: 0, rooms: [] };
+              dummyData.hotels.push(hotel);
+            }
+            const type = String(row[3] || 'Quad').trim();
+            const kapasitas = type === 'Quad' ? 4 : type === 'Triple' ? 3 : type === 'Double' ? 2 : 1;
+            hotel.rooms.push({ id: `R${hotel.id}-${hotel.rooms.length+1}`, noKamar: String(row[2] || ''), roomType: type, kapasitas, lantai: parseInt(row[4]) || 1 });
+            hotel.totalKamar = hotel.rooms.length;
+            added++;
+          });
+          showToast(`Berhasil import ${added} data kamar dari Excel!`, 'success');
+          renderHotels();
+        } catch(err) {
+          showToast('Gagal membaca file Excel!', 'error');
+        }
+      };
+      reader.readAsArrayBuffer(file);
+    }
+
+    renderHotels();
+  </script>
+</body>
+</html>

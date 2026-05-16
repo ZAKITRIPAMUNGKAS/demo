@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kalender Ocupansi | Manajemen Hotel Haji & Umroh</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="stylesheet" href="../assets/css/custom.css">
+  <style>
+    .cal-day { min-height: 60px; cursor: pointer; transition: all 0.15s; }
+    .cal-day:hover { transform: scale(1.05); z-index: 10; }
+    .occ-0   { background: #f8fafc; border-color: #e2e8f0; }
+    .occ-low { background: #dcfce7; border-color: #86efac; }
+    .occ-mid { background: #fef9c3; border-color: #fde047; }
+    .occ-hi  { background: #fee2e2; border-color: #fca5a5; }
+    .occ-full{ background: #dc2626; border-color: #b91c1c; color: white; }
+  </style>
+</head>
+<body class="bg-premium min-h-screen">
+  <div id="sidebar-container"></div>
+  <div class="lg:ml-72 min-h-screen flex flex-col">
+    <div id="topbar-container"></div>
+    <main class="p-8 flex-1">
+
+      <!-- Header -->
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-8 gap-4">
+        <div>
+          <h1 class="text-3xl font-bold text-slate-900 tracking-tight mb-1">Kalender Ocupansi</h1>
+          <p class="text-slate-500 font-medium">Visualisasi ketersediaan kamar hotel per hari. Klik tanggal untuk melihat detail.</p>
+        </div>
+        <div class="flex items-center gap-3">
+          <button onclick="prevMonth()" class="p-2.5 bg-white border border-slate-200 rounded-xl hover:bg-slate-50 transition-colors shadow-sm">
+            <i data-lucide="chevron-left" class="w-5 h-5 text-slate-600"></i>
+          </button>
+          <span id="monthLabel" class="text-lg font-bold text-slate-900 min-w-40 text-center tracking-tight"></span>
+          <button onclick="nextMonth()" class="p-2.5 bg-white border border-slate-200 rounded-xl hover:bg-slate-50 transition-colors">
+            <i data-lucide="chevron-right" class="w-5 h-5 text-slate-600"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Hotel Filter -->
+      <div class="pro-card p-5 mb-6 flex items-center gap-4 flex-wrap">
+        <div class="flex items-center gap-2">
+          <i data-lucide="building-2" class="w-4 h-4 text-slate-400"></i>
+          <span class="text-sm font-bold text-slate-700">Hotel:</span>
+        </div>
+        <div id="hotelFilterBtns" class="flex gap-2 flex-wrap"></div>
+
+        <!-- Legend -->
+        <div class="ml-auto flex items-center gap-4 text-xs font-bold text-slate-500">
+          <div class="flex items-center gap-1.5"><div class="w-3 h-3 rounded occ-low border"></div>< 60%</div>
+          <div class="flex items-center gap-1.5"><div class="w-3 h-3 rounded occ-mid border"></div>60–85%</div>
+          <div class="flex items-center gap-1.5"><div class="w-3 h-3 rounded occ-hi border"></div>&gt; 85%</div>
+          <div class="flex items-center gap-1.5"><div class="w-3 h-3 rounded occ-full border"></div>Penuh</div>
+        </div>
+      </div>
+
+      <!-- Calendar Grid -->
+      <div class="pro-card overflow-hidden">
+        <!-- Day Headers -->
+        <div class="grid grid-cols-7 bg-slate-900">
+          <div class="py-3 text-center text-[10px] font-bold text-slate-400 uppercase tracking-widest">Sen</div>
+          <div class="py-3 text-center text-[10px] font-bold text-slate-400 uppercase tracking-widest">Sel</div>
+          <div class="py-3 text-center text-[10px] font-bold text-slate-400 uppercase tracking-widest">Rab</div>
+          <div class="py-3 text-center text-[10px] font-bold text-slate-400 uppercase tracking-widest">Kam</div>
+          <div class="py-3 text-center text-[10px] font-bold text-slate-400 uppercase tracking-widest">Jum</div>
+          <div class="py-3 text-center text-[10px] font-bold text-slate-400 uppercase tracking-widest">Sab</div>
+          <div class="py-3 text-center text-[10px] font-bold text-slate-400 uppercase tracking-widest">Min</div>
+        </div>
+        <div id="calendarGrid" class="grid grid-cols-7 gap-0 divide-x divide-y divide-slate-100"></div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- Day Detail Modal -->
+  <div id="dayModal" class="modal-backdrop hidden fixed inset-0 z-50 items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
+    <div class="bg-white rounded-3xl shadow-2xl max-w-md w-full p-7">
+      <div class="flex items-center justify-between mb-5">
+        <h3 class="text-xl font-bold text-slate-900 tracking-tight" id="dayModalTitle"></h3>
+        <button onclick="closeModal('dayModal')" class="p-2 text-slate-400 hover:text-slate-600 rounded-xl"><i data-lucide="x" class="w-5 h-5"></i></button>
+      </div>
+      <div id="dayModalContent" class="space-y-3"></div>
+    </div>
+  </div>
+
+  <script src="../assets/js/data.js"></script>
+  <script src="../assets/js/main.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => lucide.createIcons());
+    let currentDate = new Date(2026, 6, 1); // July 2026
+    let selectedHotelId = null;
+
+    function initHotelFilter() {
+      const container = document.getElementById('hotelFilterBtns');
+      const allBtn = `<button onclick="setHotel(null, this)" class="hotel-btn px-4 py-2 bg-slate-900 text-white text-[10px] tracking-micro font-bold rounded-xl shadow-sm">Semua Hotel</button>`;
+      const hotelBtns = dummyData.hotels.map(h =>
+        `<button onclick="setHotel(${h.id}, this)" data-hid="${h.id}" class="hotel-btn px-4 py-2 bg-white border border-slate-200 text-slate-600 text-[10px] tracking-micro font-bold rounded-xl hover:bg-slate-50 transition-colors shadow-sm">${h.nama} <span class="text-slate-400 font-normal">(${h.kota})</span></button>`
+      ).join('');
+      container.innerHTML = allBtn + hotelBtns;
+    }
+
+    function setHotel(id, btn) {
+      selectedHotelId = id;
+      document.querySelectorAll('.hotel-btn').forEach(b => {
+        b.className = b.dataset.hid === String(id) || (!id && b.textContent.includes('Semua'))
+          ? 'hotel-btn px-4 py-2 bg-slate-900 text-white text-[10px] tracking-micro font-bold rounded-xl shadow-sm'
+          : 'hotel-btn px-4 py-2 bg-white border border-slate-200 text-slate-600 text-[10px] tracking-micro font-bold rounded-xl hover:bg-slate-50 transition-colors shadow-sm';
+      });
+      renderCalendar();
+    }
+
+    function getOccupancyClass(pct) {
+      if (pct === 0) return 'occ-0';
+      if (pct < 60) return 'occ-low';
+      if (pct < 85) return 'occ-mid';
+      if (pct < 100) return 'occ-hi';
+      return 'occ-full';
+    }
+
+    function renderCalendar() {
+      const year = currentDate.getFullYear();
+      const month = currentDate.getMonth();
+      document.getElementById('monthLabel').textContent =
+        currentDate.toLocaleDateString('id-ID', { month: 'long', year: 'numeric' });
+
+      const firstDay = new Date(year, month, 1);
+      // Adjust to Mon=0
+      let startDay = firstDay.getDay() - 1;
+      if (startDay < 0) startDay = 6;
+
+      const daysInMonth = new Date(year, month + 1, 0).getDate();
+      const grid = document.getElementById('calendarGrid');
+      grid.innerHTML = '';
+
+      // Empty cells before
+      for (let i = 0; i < startDay; i++) {
+        grid.innerHTML += `<div class="cal-day p-2 bg-slate-50/50"></div>`;
+      }
+
+      // Day cells
+      for (let day = 1; day <= daysInMonth; day++) {
+        const dateStr = `${year}-${String(month+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
+        const aktif = getActiveReservasiOnDate(dateStr, selectedHotelId);
+
+        let pct = 0;
+        if (selectedHotelId) {
+          pct = getHotelOccupancyOnDate(selectedHotelId, dateStr);
+        } else {
+          // Average across all hotels
+          const pcts = dummyData.hotels.map(h => getHotelOccupancyOnDate(h.id, dateStr));
+          pct = pcts.length ? Math.round(pcts.reduce((a,b)=>a+b,0)/pcts.length) : 0;
+        }
+
+        const cls = getOccupancyClass(pct);
+        const today = new Date();
+        const isToday = new Date(dateStr).toDateString() === today.toDateString();
+
+        grid.innerHTML += `
+          <div class="cal-day p-3 border ${cls} ${isToday ? 'ring-2 ring-slate-900 ring-inset' : ''}" onclick="showDayDetail('${dateStr}', ${JSON.stringify(aktif).replace(/"/g,'&quot;')})">
+            <div class="flex items-start justify-between mb-1">
+              <span class="text-sm font-bold ${cls.includes('full') ? 'text-white' : 'text-slate-900'} ${isToday ? 'bg-slate-900 text-white w-6 h-6 flex items-center justify-center rounded-full text-xs' : ''}">${day}</span>
+              ${aktif.length > 0 ? `<span class="text-[10px] font-bold ${cls.includes('full') ? 'text-white/80' : 'text-slate-500'} tracking-tight-data">${aktif.length} res</span>` : ''}
+            </div>
+            ${pct > 0 ? `<div class="text-[10px] font-bold ${cls.includes('full') ? 'text-white/80' : 'text-slate-400'}">${pct}%</div>` : ''}
+          </div>
+        `;
+      }
+    }
+
+    function showDayDetail(dateStr, aktifRaw) {
+      const aktif = typeof aktifRaw === 'string' ? JSON.parse(aktifRaw) : aktifRaw;
+      const d = new Date(dateStr).toLocaleDateString('id-ID', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
+      document.getElementById('dayModalTitle').textContent = d;
+
+      const content = document.getElementById('dayModalContent');
+      if (aktif.length === 0) {
+        content.innerHTML = `<div class="py-8 text-center"><i data-lucide="calendar" class="w-10 h-10 text-slate-200 mx-auto mb-3"></i><p class="text-slate-400 font-medium">Tidak ada reservasi aktif hari ini</p></div>`;
+      } else {
+        const kotaColors = { Mekkah: 'bg-blue-100 text-blue-700', Madinah: 'bg-blue-100 text-blue-700' };
+        const statusColors = { Confirmed: 'bg-blue-100 text-blue-700', Amendment: 'bg-amber-100 text-amber-700', Cancelled: 'bg-slate-100 text-slate-500' };
+        content.innerHTML = aktif.map(r => `
+          <div class="flex items-start gap-3 p-4 bg-slate-50/50 border border-slate-100 hover:border-slate-200 transition-colors rounded-2xl">
+            <div class="flex-1 min-w-0">
+              <p class="text-sm font-bold text-slate-900 truncate tracking-tight-data">${r.reservasiNo}</p>
+              <p class="text-xs text-slate-500 mt-1">${r.hotelNama}</p>
+              <div class="flex items-center gap-2 mt-2">
+                <span class="badge ${kotaColors[r.kota]||''}">${r.kota}</span>
+                <span class="badge ${statusColors[r.status]||''}">${r.status}</span>
+              </div>
+            </div>
+            <div class="text-right flex-shrink-0">
+              <p class="text-sm font-bold text-slate-900 tracking-tight-data">${r.jumlahKamar} Kamar</p>
+              <p class="text-[10px] text-slate-400 font-medium tracking-micro mt-0.5">${r.roomType}</p>
+            </div>
+          </div>
+        `).join('');
+      }
+
+      openModal('dayModal');
+      lucide.createIcons();
+    }
+
+    function prevMonth() {
+      currentDate = new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1);
+      renderCalendar();
+    }
+
+    function nextMonth() {
+      currentDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1);
+      renderCalendar();
+    }
+
+    initHotelFilter();
+    renderCalendar();
+  </script>
+</body>
+</html>

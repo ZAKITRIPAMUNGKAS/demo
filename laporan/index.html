@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Laporan - Sistem Manajemen Haji & Umroh</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="../assets/css/custom.css">
+</head>
+<body class="bg-premium min-h-screen">
+
+  <!-- Sidebar -->
+  <div id="sidebar-container"></div>
+
+  <!-- Main Content -->
+  <div class="lg:ml-72">
+    <!-- Topbar -->
+    <div id="topbar-container"></div>
+
+    <!-- Page Content -->
+    <main class="p-6">
+      <!-- Page Header -->
+      <div class="mb-6">
+        <h1 class="text-2xl font-bold text-gray-900 mb-2">Laporan & Analisis</h1>
+        <p class="text-sm text-gray-600">Export data dan lihat analisis bisnis</p>
+      </div>
+
+      <!-- Quick Export Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+        <button class="bg-white rounded-xl shadow-sm p-6 border border-gray-100 hover:shadow-md transition text-left group">
+          <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center justify-center w-12 h-12 bg-blue-100 rounded-lg group-hover:scale-110 transition">
+              <i data-lucide="users" class="w-6 h-6 text-blue-600"></i>
+            </div>
+            <i data-lucide="download" class="w-5 h-5 text-gray-400"></i>
+          </div>
+          <h3 class="text-lg font-bold text-gray-900 mb-1">Data Jamaah</h3>
+          <p class="text-sm text-gray-600">Export semua data jamaah</p>
+        </button>
+
+        <button class="bg-white rounded-xl shadow-sm p-6 border border-gray-100 hover:shadow-md transition text-left group">
+          <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center justify-center w-12 h-12 bg-blue-100 rounded-lg group-hover:scale-110 transition">
+              <i data-lucide="credit-card" class="w-6 h-6 text-blue-600"></i>
+            </div>
+            <i data-lucide="download" class="w-5 h-5 text-gray-400"></i>
+          </div>
+          <h3 class="text-lg font-bold text-gray-900 mb-1">Pembayaran</h3>
+          <p class="text-sm text-gray-600">Laporan pembayaran</p>
+        </button>
+
+        <button class="bg-white rounded-xl shadow-sm p-6 border border-gray-100 hover:shadow-md transition text-left group">
+          <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center justify-center w-12 h-12 bg-amber-100 rounded-lg group-hover:scale-110 transition">
+              <i data-lucide="plane-takeoff" class="w-6 h-6 text-amber-600"></i>
+            </div>
+            <i data-lucide="download" class="w-5 h-5 text-gray-400"></i>
+          </div>
+          <h3 class="text-lg font-bold text-gray-900 mb-1">Manifest</h3>
+          <p class="text-sm text-gray-600">Daftar jamaah per keberangkatan</p>
+        </button>
+
+        <button class="bg-white rounded-xl shadow-sm p-6 border border-gray-100 hover:shadow-md transition text-left group">
+          <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center justify-center w-12 h-12 bg-purple-100 rounded-lg group-hover:scale-110 transition">
+              <i data-lucide="trending-up" class="w-6 h-6 text-purple-600"></i>
+            </div>
+            <i data-lucide="download" class="w-5 h-5 text-gray-400"></i>
+          </div>
+          <h3 class="text-lg font-bold text-gray-900 mb-1">Penjualan</h3>
+          <p class="text-sm text-gray-600">Laporan revenue & penjualan</p>
+        </button>
+      </div>
+
+      <!-- Custom Report Generator -->
+      <div class="bg-white rounded-xl shadow-sm p-6 mb-6 border border-gray-100">
+        <h2 class="text-xl font-bold text-gray-900 mb-6">Generate Laporan Custom</h2>
+        <form class="space-y-6">
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Jenis Laporan</label>
+              <select class="block w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                <option value="">Pilih jenis laporan</option>
+                <option value="jamaah">Data Jamaah</option>
+                <option value="pembayaran">Pembayaran</option>
+                <option value="keberangkatan">Keberangkatan</option>
+                <option value="dokumen">Status Dokumen</option>
+                <option value="penjualan">Penjualan per Paket</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Tanggal Mulai</label>
+              <input type="date" class="block w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Tanggal Akhir</label>
+              <input type="date" class="block w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Format Export</label>
+              <select class="block w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                <option value="excel">Excel (.xlsx)</option>
+                <option value="pdf">PDF</option>
+                <option value="csv">CSV</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Filter Tambahan</label>
+              <select class="block w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                <option value="">Tidak ada filter</option>
+                <option value="paket">Per Paket</option>
+                <option value="status">Per Status</option>
+                <option value="keberangkatan">Per Keberangkatan</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="flex gap-3">
+            <button type="button" onclick="showToast('Laporan sedang diproses...', 'info')" class="flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-semibold">
+              <i data-lucide="download" class="w-5 h-5"></i>
+              Generate & Download
+            </button>
+            <button type="button" onclick="showToast('Preview laporan dibuka', 'info')" class="flex items-center gap-2 px-6 py-3 bg-white border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition font-semibold">
+              <i data-lucide="eye" class="w-5 h-5"></i>
+              Preview
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Analytics Dashboard -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+        <!-- Penjualan per Paket -->
+        <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+          <div class="flex items-center justify-between mb-6">
+            <div>
+              <h3 class="text-lg font-bold text-gray-900">Penjualan per Paket</h3>
+              <p class="text-sm text-gray-600">Distribusi jamaah per paket</p>
+            </div>
+          </div>
+          <div class="chart-container">
+            <canvas id="paketChart"></canvas>
+          </div>
+        </div>
+
+        <!-- Status Pembayaran -->
+        <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+          <div class="flex items-center justify-between mb-6">
+            <div>
+              <h3 class="text-lg font-bold text-gray-900">Status Pembayaran</h3>
+              <p class="text-sm text-gray-600">Distribusi status pembayaran</p>
+            </div>
+          </div>
+          <div class="chart-container">
+            <canvas id="pembayaranChart"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Summary Table -->
+      <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+        <div class="p-6 border-b border-gray-200">
+          <h3 class="text-lg font-bold text-gray-900">Ringkasan Penjualan per Paket</h3>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full">
+            <thead class="bg-gray-50 border-b border-gray-200">
+              <tr>
+                <th class="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Paket</th>
+                <th class="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Jamaah Terdaftar</th>
+                <th class="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Total Revenue</th>
+                <th class="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Terbayar</th>
+                <th class="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Outstanding</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200">
+              <tr class="hover:bg-gray-50">
+                <td class="px-6 py-4">
+                  <p class="font-semibold text-gray-900">Umroh Reguler 12 Hari</p>
+                </td>
+                <td class="px-6 py-4">
+                  <p class="text-gray-900">45 Jamaah</p>
+                </td>
+                <td class="px-6 py-4">
+                  <p class="font-semibold text-gray-900">Rp 1.282.500.000</p>
+                </td>
+                <td class="px-6 py-4">
+                  <p class="font-semibold text-green-600">Rp 1.100.000.000</p>
+                </td>
+                <td class="px-6 py-4">
+                  <p class="font-semibold text-amber-600">Rp 182.500.000</p>
+                </td>
+              </tr>
+              <tr class="hover:bg-gray-50">
+                <td class="px-6 py-4">
+                  <p class="font-semibold text-gray-900">Umroh Ramadhan 15 Hari</p>
+                </td>
+                <td class="px-6 py-4">
+                  <p class="text-gray-900">50 Jamaah</p>
+                </td>
+                <td class="px-6 py-4">
+                  <p class="font-semibold text-gray-900">Rp 2.250.000.000</p>
+                </td>
+                <td class="px-6 py-4">
+                  <p class="font-semibold text-green-600">Rp 2.250.000.000</p>
+                </td>
+                <td class="px-6 py-4">
+                  <p class="font-semibold text-gray-900">Rp 0</p>
+                </td>
+              </tr>
+              <tr class="hover:bg-gray-50">
+                <td class="px-6 py-4">
+                  <p class="font-semibold text-gray-900">Haji Plus 40 Hari</p>
+                </td>
+                <td class="px-6 py-4">
+                  <p class="text-gray-900">28 Jamaah</p>
+                </td>
+                <td class="px-6 py-4">
+                  <p class="font-semibold text-gray-900">Rp 3.500.000.000</p>
+                </td>
+                <td class="px-6 py-4">
+                  <p class="font-semibold text-green-600">Rp 2.100.000.000</p>
+                </td>
+                <td class="px-6 py-4">
+                  <p class="font-semibold text-amber-600">Rp 1.400.000.000</p>
+                </td>
+              </tr>
+            </tbody>
+            <tfoot class="bg-gray-50 border-t-2 border-gray-300">
+              <tr>
+                <td class="px-6 py-4">
+                  <p class="font-bold text-gray-900">Total</p>
+                </td>
+                <td class="px-6 py-4">
+                  <p class="font-bold text-gray-900">123 Jamaah</p>
+                </td>
+                <td class="px-6 py-4">
+                  <p class="font-bold text-gray-900">Rp 7.032.500.000</p>
+                </td>
+                <td class="px-6 py-4">
+                  <p class="font-bold text-green-600">Rp 5.450.000.000</p>
+                </td>
+                <td class="px-6 py-4">
+                  <p class="font-bold text-amber-600">Rp 1.582.500.000</p>
+                </td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Scripts -->
+  <script src="../assets/js/data.js"></script>
+  <script src="../assets/js/main.js"></script>
+  <script>
+    // Icons are re-initialized by injectPartials() on DOMContentLoaded
+    // Re-initialize for static elements on this page
+    document.addEventListener('DOMContentLoaded', () => lucide.createIcons());
+
+    // Paket Chart
+    const paketCtx = document.getElementById('paketChart').getContext('2d');
+    new Chart(paketCtx, {
+      type: 'doughnut',
+      data: {
+        labels: ['Umroh Reguler', 'Umroh Ramadhan', 'Haji Plus'],
+        datasets: [{
+          data: [45, 50, 28],
+          backgroundColor: ['#059669', '#f59e0b', '#3b82f6'],
+          borderWidth: 0
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            position: 'bottom'
+          }
+        }
+      }
+    });
+
+    // Pembayaran Chart
+    const pembayaranCtx = document.getElementById('pembayaranChart').getContext('2d');
+    new Chart(pembayaranCtx, {
+      type: 'pie',
+      data: {
+        labels: ['Lunas', 'Cicilan', 'Pending'],
+        datasets: [{
+          data: [65, 28, 7],
+          backgroundColor: ['#10b981', '#f59e0b', '#ef4444'],
+          borderWidth: 0
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            position: 'bottom'
+          }
+        }
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detail Jamaah - Sistem Manajemen Haji & Umroh</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="../assets/css/custom.css">
+</head>
+<body class="bg-premium min-h-screen">
+
+  <!-- Sidebar -->
+  <div id="sidebar-container"></div>
+
+  <!-- Main Content -->
+  <div class="lg:ml-72">
+    <!-- Topbar -->
+    <div id="topbar-container"></div>
+
+    <!-- Page Content -->
+    <main class="p-6">
+      <!-- Breadcrumb -->
+      <nav class="flex items-center gap-2 text-sm text-gray-600 mb-6">
+        <a href="index.html" class="hover:text-blue-600">Jamaah</a>
+        <i data-lucide="chevron-right" class="w-4 h-4"></i>
+        <span class="text-gray-900 font-medium">Detail Jamaah</span>
+      </nav>
+
+      <!-- Header -->
+      <div class="bg-white rounded-xl shadow-sm p-6 mb-6 border border-gray-100">
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+          <div class="flex items-center gap-4 mb-4 md:mb-0">
+            <img src="https://ui-avatars.com/api/?name=Siti+Aminah&background=059669&color=fff&size=80" alt="Siti Aminah" class="w-20 h-20 rounded-full">
+            <div>
+              <h1 class="text-2xl font-bold text-gray-900 mb-1">Siti Aminah</h1>
+              <div class="flex items-center gap-3 text-sm text-gray-600">
+                <span class="flex items-center gap-1">
+                  <i data-lucide="user" class="w-4 h-4"></i>
+                  Perempuan
+                </span>
+                <span class="flex items-center gap-1">
+                  <i data-lucide="phone" class="w-4 h-4"></i>
+                  081234567890
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="flex gap-3">
+            <a href="form.html?id=1" class="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
+              <i data-lucide="edit" class="w-4 h-4"></i>
+              Edit Data
+            </a>
+            <button class="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition">
+              <i data-lucide="printer" class="w-4 h-4"></i>
+              Cetak
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tabs -->
+      <div class="bg-white rounded-xl shadow-sm border border-gray-100 mb-6">
+        <div class="border-b border-gray-200">
+          <nav class="flex -mb-px">
+            <button onclick="switchTab('info')" id="tab-info" class="tab-button active px-6 py-4 text-sm font-semibold border-b-2 border-blue-600 text-blue-600">
+              Informasi Pribadi
+            </button>
+            <button onclick="switchTab('paket')" id="tab-paket" class="tab-button px-6 py-4 text-sm font-semibold border-b-2 border-transparent text-gray-600 hover:text-gray-900 hover:border-gray-300">
+              Paket & Keberangkatan
+            </button>
+            <button onclick="switchTab('pembayaran')" id="tab-pembayaran" class="tab-button px-6 py-4 text-sm font-semibold border-b-2 border-transparent text-gray-600 hover:text-gray-900 hover:border-gray-300">
+              Pembayaran
+            </button>
+            <button onclick="switchTab('dokumen')" id="tab-dokumen" class="tab-button px-6 py-4 text-sm font-semibold border-b-2 border-transparent text-gray-600 hover:text-gray-900 hover:border-gray-300">
+              Dokumen
+            </button>
+          </nav>
+        </div>
+
+        <!-- Tab Content: Informasi Pribadi -->
+        <div id="content-info" class="tab-content p-6">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">NIK</label>
+              <p class="text-gray-900">3201012345670001</p>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Nomor Paspor</label>
+              <p class="text-gray-900">A1234567</p>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Nama Lengkap</label>
+              <p class="text-gray-900">Siti Aminah</p>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Jenis Kelamin</label>
+              <p class="text-gray-900">Perempuan</p>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Nomor HP</label>
+              <p class="text-gray-900">081234567890</p>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+              <p class="text-gray-900">siti.aminah@email.com</p>
+            </div>
+            <div class="md:col-span-2">
+              <label class="block text-sm font-medium text-gray-700 mb-1">Alamat</label>
+              <p class="text-gray-900">Jl. Merdeka No. 123, Jakarta Pusat</p>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Tanggal Lahir</label>
+              <p class="text-gray-900">15 Januari 1985</p>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Tempat Lahir</label>
+              <p class="text-gray-900">Jakarta</p>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Golongan Darah</label>
+              <p class="text-gray-900">A</p>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Status Pernikahan</label>
+              <p class="text-gray-900">Menikah</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab Content: Paket & Keberangkatan -->
+        <div id="content-paket" class="tab-content hidden p-6">
+          <div class="space-y-6">
+            <!-- Paket Info -->
+            <div class="bg-blue-50 border border-blue-200 rounded-lg p-6">
+              <div class="flex items-start justify-between mb-4">
+                <div>
+                  <h3 class="text-lg font-bold text-gray-900 mb-1">Umroh Reguler 12 Hari</h3>
+                  <p class="text-sm text-gray-600">Paket umroh ekonomis dengan fasilitas lengkap</p>
+                </div>
+                <span class="badge badge-success">Aktif</span>
+              </div>
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1">Harga Paket</label>
+                  <p class="text-lg font-bold text-blue-600">Rp 28.500.000</p>
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1">Durasi</label>
+                  <p class="text-gray-900">12 Hari</p>
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1">Hotel</label>
+                  <p class="text-gray-900">Bintang 3 (200m dari Masjidil Haram)</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Keberangkatan Info -->
+            <div>
+              <h3 class="text-lg font-bold text-gray-900 mb-4">Informasi Keberangkatan</h3>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1">Kode Keberangkatan</label>
+                  <p class="text-gray-900 font-mono">CGK-20260520-REGULER</p>
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1">Maskapai</label>
+                  <p class="text-gray-900">Garuda Indonesia</p>
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1">Tanggal Berangkat</label>
+                  <p class="text-gray-900">20 Mei 2026</p>
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1">Tanggal Kembali</label>
+                  <p class="text-gray-900">31 Mei 2026</p>
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1">Bandara Keberangkatan</label>
+                  <p class="text-gray-900">Soekarno-Hatta (CGK)</p>
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1">Status</label>
+                  <span class="badge badge-success">Confirmed</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab Content: Pembayaran -->
+        <div id="content-pembayaran" class="tab-content hidden p-6">
+          <div class="space-y-6">
+            <!-- Payment Summary -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                <p class="text-sm text-gray-600 mb-1">Total Biaya</p>
+                <p class="text-2xl font-bold text-gray-900">Rp 28.500.000</p>
+              </div>
+              <div class="bg-green-50 border border-green-200 rounded-lg p-4">
+                <p class="text-sm text-gray-600 mb-1">Terbayar</p>
+                <p class="text-2xl font-bold text-green-600">Rp 28.500.000</p>
+              </div>
+              <div class="bg-gray-50 border border-gray-200 rounded-lg p-4">
+                <p class="text-sm text-gray-600 mb-1">Sisa</p>
+                <p class="text-2xl font-bold text-gray-900">Rp 0</p>
+              </div>
+            </div>
+
+            <!-- Payment History -->
+            <div>
+              <h3 class="text-lg font-bold text-gray-900 mb-4">Riwayat Pembayaran</h3>
+              <div class="space-y-3">
+                <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                  <div class="flex items-center gap-4">
+                    <div class="flex items-center justify-center w-10 h-10 bg-green-100 rounded-lg">
+                      <i data-lucide="check-circle" class="w-5 h-5 text-green-600"></i>
+                    </div>
+                    <div>
+                      <p class="font-semibold text-gray-900">Pembayaran Termin 3</p>
+                      <p class="text-sm text-gray-600">15 April 2026 • Transfer BCA</p>
+                    </div>
+                  </div>
+                  <p class="text-lg font-bold text-gray-900">Rp 8.500.000</p>
+                </div>
+                <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                  <div class="flex items-center gap-4">
+                    <div class="flex items-center justify-center w-10 h-10 bg-green-100 rounded-lg">
+                      <i data-lucide="check-circle" class="w-5 h-5 text-green-600"></i>
+                    </div>
+                    <div>
+                      <p class="font-semibold text-gray-900">Pembayaran Termin 2</p>
+                      <p class="text-sm text-gray-600">1 April 2026 • Transfer BCA</p>
+                    </div>
+                  </div>
+                  <p class="text-lg font-bold text-gray-900">Rp 10.000.000</p>
+                </div>
+                <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                  <div class="flex items-center gap-4">
+                    <div class="flex items-center justify-center w-10 h-10 bg-green-100 rounded-lg">
+                      <i data-lucide="check-circle" class="w-5 h-5 text-green-600"></i>
+                    </div>
+                    <div>
+                      <p class="font-semibold text-gray-900">Pembayaran DP</p>
+                      <p class="text-sm text-gray-600">15 Maret 2026 • Transfer BCA</p>
+                    </div>
+                  </div>
+                  <p class="text-lg font-bold text-gray-900">Rp 10.000.000</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab Content: Dokumen -->
+        <div id="content-dokumen" class="tab-content hidden p-6">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+              <div class="flex items-center gap-3">
+                <div class="flex items-center justify-center w-10 h-10 bg-green-100 rounded-lg">
+                  <i data-lucide="file-text" class="w-5 h-5 text-green-600"></i>
+                </div>
+                <div>
+                  <p class="font-semibold text-gray-900">KTP</p>
+                  <p class="text-sm text-gray-600">Diupload 15 Mar 2026</p>
+                </div>
+              </div>
+              <span class="badge badge-success">Verified</span>
+            </div>
+            <div class="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+              <div class="flex items-center gap-3">
+                <div class="flex items-center justify-center w-10 h-10 bg-green-100 rounded-lg">
+                  <i data-lucide="file-text" class="w-5 h-5 text-green-600"></i>
+                </div>
+                <div>
+                  <p class="font-semibold text-gray-900">Kartu Keluarga</p>
+                  <p class="text-sm text-gray-600">Diupload 15 Mar 2026</p>
+                </div>
+              </div>
+              <span class="badge badge-success">Verified</span>
+            </div>
+            <div class="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+              <div class="flex items-center gap-3">
+                <div class="flex items-center justify-center w-10 h-10 bg-green-100 rounded-lg">
+                  <i data-lucide="file-text" class="w-5 h-5 text-green-600"></i>
+                </div>
+                <div>
+                  <p class="font-semibold text-gray-900">Paspor</p>
+                  <p class="text-sm text-gray-600">Diupload 16 Mar 2026</p>
+                </div>
+              </div>
+              <span class="badge badge-success">Verified</span>
+            </div>
+            <div class="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+              <div class="flex items-center gap-3">
+                <div class="flex items-center justify-center w-10 h-10 bg-green-100 rounded-lg">
+                  <i data-lucide="image" class="w-5 h-5 text-green-600"></i>
+                </div>
+                <div>
+                  <p class="font-semibold text-gray-900">Foto 4x6</p>
+                  <p class="text-sm text-gray-600">Diupload 16 Mar 2026</p>
+                </div>
+              </div>
+              <span class="badge badge-success">Verified</span>
+            </div>
+            <div class="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+              <div class="flex items-center gap-3">
+                <div class="flex items-center justify-center w-10 h-10 bg-green-100 rounded-lg">
+                  <i data-lucide="file-text" class="w-5 h-5 text-green-600"></i>
+                </div>
+                <div>
+                  <p class="font-semibold text-gray-900">Vaksin Meningitis</p>
+                  <p class="text-sm text-gray-600">Diupload 20 Mar 2026</p>
+                </div>
+              </div>
+              <span class="badge badge-success">Verified</span>
+            </div>
+            <div class="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+              <div class="flex items-center gap-3">
+                <div class="flex items-center justify-center w-10 h-10 bg-green-100 rounded-lg">
+                  <i data-lucide="file-text" class="w-5 h-5 text-green-600"></i>
+                </div>
+                <div>
+                  <p class="font-semibold text-gray-900">Visa</p>
+                  <p class="text-sm text-gray-600">Diupload 10 Apr 2026</p>
+                </div>
+              </div>
+              <span class="badge badge-success">Verified</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Scripts -->
+  <script src="../assets/js/data.js"></script>
+  <script src="../assets/js/main.js"></script>
+  <script>
+    // Initialize Lucide icons
+    lucide.createIcons();
+
+    // Tab switching
+    function switchTab(tabName) {
+      // Hide all tab contents
+      document.querySelectorAll('.tab-content').forEach(content => {
+        content.classList.add('hidden');
+      });
+
+      // Remove active class from all tab buttons
+      document.querySelectorAll('.tab-button').forEach(button => {
+        button.classList.remove('active', 'border-blue-600', 'text-blue-600');
+        button.classList.add('border-transparent', 'text-gray-600');
+      });
+
+      // Show selected tab content
+      document.getElementById(`content-${tabName}`).classList.remove('hidden');
+
+      // Add active class to selected tab button
+      const activeButton = document.getElementById(`tab-${tabName}`);
+      activeButton.classList.add('active', 'border-blue-600', 'text-blue-600');
+      activeButton.classList.remove('border-transparent', 'text-gray-600');
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profil Saya - Sistem Manajemen Haji & Umroh</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="assets/css/custom.css">
+</head>
+<body class="bg-gray-50">
+
+  <!-- Sidebar -->
+  <div id="sidebar-container"></div>
+
+  <!-- Main Content -->
+  <div class="lg:ml-72">
+    <!-- Topbar -->
+    <div id="topbar-container"></div>
+
+    <!-- Page Content -->
+    <main class="p-6">
+      <!-- Page Header -->
+      <div class="mb-6">
+        <h1 class="text-2xl font-bold text-gray-900 mb-2">Profil Saya</h1>
+        <p class="text-sm text-gray-600">Kelola informasi profil dan pengaturan akun Anda</p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Profile Card -->
+        <div class="lg:col-span-1">
+          <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+            <div class="text-center mb-6">
+              <div class="relative inline-block">
+                <img src="https://ui-avatars.com/api/?name=Ahmad+Fauzi&background=059669&color=fff&size=128" alt="Ahmad Fauzi" class="w-32 h-32 rounded-full mx-auto mb-4">
+                <button class="absolute bottom-4 right-0 p-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition">
+                  <i data-lucide="camera" class="w-4 h-4"></i>
+                </button>
+              </div>
+              <h2 class="text-xl font-bold text-gray-900 mb-1">Ahmad Fauzi</h2>
+              <p class="text-sm text-gray-600 mb-2">ahmad.fauzi@hajjumroh.com</p>
+              <span class="badge badge-danger">Admin</span>
+            </div>
+
+            <div class="space-y-4 pt-6 border-t border-gray-200">
+              <div class="flex items-center gap-3">
+                <div class="flex items-center justify-center w-10 h-10 bg-blue-100 rounded-lg">
+                  <i data-lucide="phone" class="w-5 h-5 text-blue-600"></i>
+                </div>
+                <div>
+                  <p class="text-xs text-gray-600">No. HP</p>
+                  <p class="text-sm font-semibold text-gray-900">+62 812 3456 7890</p>
+                </div>
+              </div>
+
+              <div class="flex items-center gap-3">
+                <div class="flex items-center justify-center w-10 h-10 bg-blue-100 rounded-lg">
+                  <i data-lucide="calendar" class="w-5 h-5 text-blue-600"></i>
+                </div>
+                <div>
+                  <p class="text-xs text-gray-600">Bergabung Sejak</p>
+                  <p class="text-sm font-semibold text-gray-900">15 Januari 2025</p>
+                </div>
+              </div>
+
+              <div class="flex items-center gap-3">
+                <div class="flex items-center justify-center w-10 h-10 bg-amber-100 rounded-lg">
+                  <i data-lucide="clock" class="w-5 h-5 text-amber-600"></i>
+                </div>
+                <div>
+                  <p class="text-xs text-gray-600">Login Terakhir</p>
+                  <p class="text-sm font-semibold text-gray-900">14 Mei 2026, 09:30 WIB</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Profile Forms -->
+        <div class="lg:col-span-2 space-y-6">
+          <!-- Informasi Pribadi -->
+          <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+            <h3 class="text-lg font-bold text-gray-900 mb-6">Informasi Pribadi</h3>
+            <form data-submit-message="Profil berhasil diperbarui!">
+              <div class="space-y-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Nama Lengkap</label>
+                    <input type="text" value="Ahmad Fauzi" class="block w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" required>
+                  </div>
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                    <input type="email" value="ahmad.fauzi@hajjumroh.com" class="block w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" required>
+                  </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">No. HP</label>
+                    <input type="tel" value="+62 812 3456 7890" class="block w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" required>
+                  </div>
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Role</label>
+                    <input type="text" value="Admin" class="block w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-50" disabled>
+                  </div>
+                </div>
+
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-2">Alamat</label>
+                  <textarea rows="3" class="block w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" placeholder="Alamat lengkap">Jl. Sudirman No. 123, Jakarta Pusat, DKI Jakarta 10220</textarea>
+                </div>
+              </div>
+
+              <div class="flex justify-end mt-6">
+                <button type="submit" class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
+                  Simpan Perubahan
+                </button>
+              </div>
+            </form>
+          </div>
+
+          <!-- Ubah Password -->
+          <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+            <h3 class="text-lg font-bold text-gray-900 mb-6">Ubah Password</h3>
+            <form data-submit-message="Password berhasil diubah!">
+              <div class="space-y-4">
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-2">Password Lama</label>
+                  <input type="password" class="block w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" placeholder="Masukkan password lama" required>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Password Baru</label>
+                    <input type="password" class="block w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" placeholder="Minimal 8 karakter" required>
+                  </div>
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Konfirmasi Password Baru</label>
+                    <input type="password" class="block w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" placeholder="Ulangi password baru" required>
+                  </div>
+                </div>
+
+                <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                  <div class="flex gap-3">
+                    <i data-lucide="info" class="w-5 h-5 text-blue-600 flex-shrink-0"></i>
+                    <div class="text-sm text-blue-900">
+                      <p class="font-semibold mb-1">Persyaratan Password:</p>
+                      <ul class="list-disc list-inside space-y-1 text-blue-800">
+                        <li>Minimal 8 karakter</li>
+                        <li>Kombinasi huruf besar dan kecil</li>
+                        <li>Minimal 1 angka</li>
+                        <li>Minimal 1 karakter spesial (!@#$%^&*)</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="flex justify-end mt-6">
+                <button type="submit" class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
+                  Ubah Password
+                </button>
+              </div>
+            </form>
+          </div>
+
+          <!-- Preferensi -->
+          <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+            <h3 class="text-lg font-bold text-gray-900 mb-6">Preferensi</h3>
+            <form data-submit-message="Preferensi berhasil disimpan!">
+              <div class="space-y-4">
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-2">Bahasa</label>
+                  <select class="block w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                    <option value="id" selected>Bahasa Indonesia</option>
+                    <option value="en">English</option>
+                    <option value="ar">العربية (Arabic)</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-2">Zona Waktu</label>
+                  <select class="block w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                    <option value="wib" selected>WIB (GMT+7)</option>
+                    <option value="wita">WITA (GMT+8)</option>
+                    <option value="wit">WIT (GMT+9)</option>
+                  </select>
+                </div>
+
+                <div class="space-y-3">
+                  <label class="block text-sm font-medium text-gray-700">Notifikasi Email</label>
+                  <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                    <div>
+                      <p class="font-semibold text-gray-900 text-sm">Pembayaran Baru</p>
+                      <p class="text-xs text-gray-600">Terima notifikasi saat ada pembayaran baru</p>
+                    </div>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                      <input type="checkbox" class="sr-only peer" checked>
+                      <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                    </label>
+                  </div>
+
+                  <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                    <div>
+                      <p class="font-semibold text-gray-900 text-sm">Jamaah Baru</p>
+                      <p class="text-xs text-gray-600">Terima notifikasi saat ada pendaftaran jamaah baru</p>
+                    </div>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                      <input type="checkbox" class="sr-only peer" checked>
+                      <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                    </label>
+                  </div>
+
+                  <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                    <div>
+                      <p class="font-semibold text-gray-900 text-sm">Laporan Mingguan</p>
+                      <p class="text-xs text-gray-600">Terima ringkasan laporan setiap minggu</p>
+                    </div>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                      <input type="checkbox" class="sr-only peer">
+                      <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="flex justify-end mt-6">
+                <button type="submit" class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
+                  Simpan Preferensi
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Scripts -->
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/main.js"></script>
+  <script>
+    // Initialize Lucide icons
+    lucide.createIcons();
+  </script>
+</body>
+</html>

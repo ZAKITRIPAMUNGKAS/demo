@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reservasi Hotel | Manajemen Hotel Haji & Umroh</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="stylesheet" href="../assets/css/custom.css">
+</head>
+<body class="bg-premium min-h-screen">
+  <div id="sidebar-container"></div>
+  <div class="lg:ml-72 min-h-screen flex flex-col">
+    <div id="topbar-container"></div>
+    <main class="p-8 flex-1">
+
+      <!-- Header -->
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-8 gap-4">
+        <div>
+          <h1 class="text-3xl font-bold text-slate-900 tracking-tight mb-1">Reservasi Hotel</h1>
+          <p class="text-slate-500 font-medium">Kelola alokasi kamar hotel per keberangkatan. Sistem mendeteksi konflik tanggal secara otomatis.</p>
+        </div>
+        <button onclick="openModal('addReservasiModal')" class="btn-pro flex items-center gap-2.5 shadow-sm">
+          <i data-lucide="plus" class="w-4 h-4"></i>
+          Buat Reservasi Baru
+        </button>
+      </div>
+
+      <!-- Alert: Conflict Warning Example -->
+      <div id="conflictAlert" class="hidden mb-6 p-4 bg-red-50 border border-red-200 rounded-2xl flex items-start gap-3">
+        <i data-lucide="alert-triangle" class="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5"></i>
+        <div>
+          <p class="text-sm font-bold text-red-800" id="conflictMsg">Konflik terdeteksi!</p>
+          <p class="text-xs text-red-600 mt-0.5" id="conflictDetail"></p>
+        </div>
+      </div>
+
+      <!-- Filter Bar -->
+      <div class="pro-card p-5 mb-6 flex flex-col md:flex-row gap-4 items-start md:items-center">
+        <div class="relative flex-1">
+          <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2"></i>
+          <input type="text" id="filterSearch" placeholder="Cari no. reservasi, hotel, atau keberangkatan..."
+            class="w-full pl-11 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10"
+            oninput="renderTable()">
+        </div>
+        <select id="filterKota" onchange="renderTable()"
+          class="px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium focus:outline-none focus:border-blue-500 text-slate-700">
+          <option value="">Semua Kota</option>
+          <option value="Mekkah">Mekkah</option>
+          <option value="Madinah">Madinah</option>
+        </select>
+        <select id="filterStatus" onchange="renderTable()"
+          class="px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium focus:outline-none focus:border-blue-500 text-slate-700">
+          <option value="">Semua Status</option>
+          <option value="Confirmed">Confirmed</option>
+          <option value="Amendment">Amendment</option>
+          <option value="Cancelled">Cancelled</option>
+        </select>
+      </div>
+
+      <!-- Reservasi Table -->
+      <div class="pro-card overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="w-full">
+            <thead>
+              <tr class="bg-slate-50 border-b border-slate-100">
+                <th class="px-6 py-4 text-left text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em]">No. Reservasi</th>
+                <th class="px-6 py-4 text-left text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em]">Keberangkatan</th>
+                <th class="px-6 py-4 text-left text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em]">Hotel & Kota</th>
+                <th class="px-6 py-4 text-left text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em]">Paket & Kamar</th>
+                <th class="px-6 py-4 text-left text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em]">Check-In / Check-Out</th>
+                <th class="px-6 py-4 text-left text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em]">Status</th>
+                <th class="px-6 py-4 text-right text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em]">Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="reservasiTable" class="divide-y divide-slate-50"></tbody>
+          </table>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- ADD RESERVASI MODAL -->
+  <div id="addReservasiModal" class="modal-backdrop hidden fixed inset-0 z-50 items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
+    <div class="bg-white rounded-3xl shadow-2xl max-w-2xl w-full p-8 max-h-[90vh] overflow-y-auto">
+      <div class="flex items-center justify-between mb-6">
+        <div>
+          <h3 class="text-xl font-bold text-slate-900">Buat Reservasi Baru</h3>
+          <p class="text-[10px] tracking-micro text-slate-500 mt-1">Sistem otomatis cek ketersediaan kamar</p>
+        </div>
+        <button onclick="closeModal('addReservasiModal')" class="p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-xl transition-colors">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <!-- Conflict Check Result -->
+      <div id="modalConflict" class="hidden mb-5 p-4 bg-red-50 border border-red-200 rounded-2xl">
+        <div class="flex items-start gap-3">
+          <i data-lucide="alert-triangle" class="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5"></i>
+          <div>
+            <p class="text-sm font-bold text-red-800">⚠ Konflik Ketersediaan Kamar!</p>
+            <p class="text-xs text-red-600 mt-1" id="modalConflictDetail"></p>
+          </div>
+        </div>
+      </div>
+      <div id="modalAvailable" class="hidden mb-5 p-4 bg-blue-50 border border-blue-200 rounded-2xl">
+        <div class="flex items-center gap-3">
+          <i data-lucide="check-circle" class="w-5 h-5 text-blue-600"></i>
+          <p class="text-sm font-bold text-blue-800" id="modalAvailableDetail">Kamar tersedia</p>
+        </div>
+      </div>
+
+      <div class="space-y-5">
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-bold text-slate-700 mb-2">Keberangkatan <span class="text-red-500">*</span></label>
+            <select id="formKeberangkatan" onchange="updateFormState()"
+              class="block w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none text-sm font-medium">
+              <option value="">Pilih keberangkatan...</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm font-bold text-slate-700 mb-2">Paket <span class="text-red-500">*</span></label>
+            <select id="formPaket" class="block w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none text-sm font-medium">
+              <option value="">Pilih paket...</option>
+              <option value="M">Economy (M)</option>
+              <option value="S">Standard (S)</option>
+              <option value="SF">Full Fasilitas (SF)</option>
+              <option value="SAF">Super Full (SAF)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-bold text-slate-700 mb-2">Hotel <span class="text-red-500">*</span></label>
+            <select id="formHotel" onchange="checkAvailability()"
+              class="block w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none text-sm font-medium">
+              <option value="">Pilih hotel...</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm font-bold text-slate-700 mb-2">Tipe Kamar <span class="text-red-500">*</span></label>
+            <select id="formRoomType" onchange="checkAvailability()"
+              class="block w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none text-sm font-medium">
+              <option value="">Pilih tipe kamar...</option>
+              <option value="Quad">Quad (4 orang)</option>
+              <option value="Triple">Triple (3 orang)</option>
+              <option value="Double">Double (2 orang)</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-sm font-bold text-slate-700 mb-2">Jumlah Kamar <span class="text-red-500">*</span></label>
+          <input type="number" id="formJumlah" min="1" placeholder="Masukkan jumlah kamar..." onchange="checkAvailability()"
+            class="block w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none text-sm">
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-bold text-slate-700 mb-2">Check-In <span class="text-red-500">*</span></label>
+            <input type="date" id="formCheckIn" onchange="checkAvailability()"
+              class="block w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none text-sm">
+          </div>
+          <div>
+            <label class="block text-sm font-bold text-slate-700 mb-2">Check-Out <span class="text-red-500">*</span></label>
+            <input type="date" id="formCheckOut" onchange="checkAvailability()"
+              class="block w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none text-sm">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-sm font-bold text-slate-700 mb-2">No. Referensi Vendor</label>
+          <input type="text" id="formVendorRef" placeholder="Nomor reservasi dari vendor/hotel..."
+            class="block w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none text-sm">
+        </div>
+
+        <div class="flex gap-3 pt-2">
+          <button type="button" onclick="closeModal('addReservasiModal')" class="flex-1 px-4 py-3 border border-slate-200 text-slate-700 rounded-xl hover:bg-slate-50 transition font-semibold text-sm">
+            Batal
+          </button>
+          <button type="button" onclick="submitReservasi()" id="submitBtn"
+            class="btn-pro flex-1 justify-center py-3 text-sm">
+            Simpan Reservasi
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- AMENDMENT MODAL -->
+  <div id="amendModal" class="modal-backdrop hidden fixed inset-0 z-50 items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
+    <div class="bg-white rounded-3xl shadow-2xl max-w-lg w-full p-8">
+      <div class="flex items-center justify-between mb-6">
+        <div>
+          <h3 class="text-xl font-bold text-slate-900">Amendment Tanggal</h3>
+          <p class="text-[10px] text-slate-500 mt-1 tracking-micro" id="amendReservasiNo"></p>
+        </div>
+        <button onclick="closeModal('amendModal')" class="p-2 text-slate-400 hover:text-slate-600 rounded-xl">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+      <div class="p-4 bg-amber-50 border border-amber-200 rounded-2xl mb-5 flex items-start gap-3">
+        <i data-lucide="info" class="w-5 h-5 text-amber-600 flex-shrink-0"></i>
+        <p class="text-xs text-amber-800 font-medium">Perubahan tanggal akan dicatat dalam riwayat amendment. Sistem akan re-check ketersediaan kamar untuk tanggal baru.</p>
+      </div>
+      <div class="grid grid-cols-2 gap-4 mb-5">
+        <div>
+          <label class="block text-sm font-bold text-slate-700 mb-2">Check-In Baru</label>
+          <input type="date" id="amendCheckIn" class="block w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none focus:border-blue-500">
+        </div>
+        <div>
+          <label class="block text-sm font-bold text-slate-700 mb-2">Check-Out Baru</label>
+          <input type="date" id="amendCheckOut" class="block w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none focus:border-blue-500">
+        </div>
+      </div>
+      <div class="flex gap-3">
+        <button onclick="closeModal('amendModal')" class="flex-1 px-4 py-3 border border-slate-200 text-slate-700 rounded-xl hover:bg-slate-50 text-sm font-semibold">Batal</button>
+        <button onclick="submitAmendment()" class="flex-1 px-4 py-3 bg-amber-500 text-white rounded-xl hover:bg-amber-600 text-sm font-bold">Simpan Perubahan</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../assets/js/data.js"></script>
+  <script src="../assets/js/main.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => lucide.createIcons());
+    let currentAmendId = null;
+
+    // Populate dropdowns
+    function initDropdowns() {
+      const kbSelect = document.getElementById('formKeberangkatan');
+      dummyData.keberangkatan.forEach(k => {
+        kbSelect.innerHTML += `<option value="${k.id}">${k.kode} — ${k.bandara} ${k.tanggalBerangkat}</option>`;
+      });
+
+      const hotelSelect = document.getElementById('formHotel');
+      dummyData.hotels.forEach(h => {
+        hotelSelect.innerHTML += `<option value="${h.id}">${h.nama} (${h.kota})</option>`;
+      });
+    }
+
+    function checkAvailability() {
+      const hotelId = parseInt(document.getElementById('formHotel').value);
+      const roomType = document.getElementById('formRoomType').value;
+      const jumlah = parseInt(document.getElementById('formJumlah').value) || 0;
+      const ci = document.getElementById('formCheckIn').value;
+      const co = document.getElementById('formCheckOut').value;
+
+      if (!hotelId || !roomType || !jumlah || !ci || !co) return;
+
+      const result = checkRoomAvailability(hotelId, roomType, jumlah, ci, co);
+      const conflictDiv = document.getElementById('modalConflict');
+      const availableDiv = document.getElementById('modalAvailable');
+      const submitBtn = document.getElementById('submitBtn');
+
+      if (!result.available) {
+        conflictDiv.classList.remove('hidden');
+        availableDiv.classList.add('hidden');
+        document.getElementById('modalConflictDetail').textContent =
+          `Hanya ${result.tersedia} kamar ${roomType} tersedia (${result.terpakai}/${result.total} terpakai). Konflik dengan ${result.konflik.length} reservasi: ${result.konflik.map(r => r.reservasiNo).join(', ')}`;
+        submitBtn.classList.add('opacity-50', 'cursor-not-allowed');
+        submitBtn.disabled = true;
+      } else {
+        conflictDiv.classList.add('hidden');
+        availableDiv.classList.remove('hidden');
+        document.getElementById('modalAvailableDetail').textContent =
+          `✓ ${result.tersedia} dari ${result.total} kamar ${roomType} tersedia untuk periode ini.`;
+        submitBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+        submitBtn.disabled = false;
+      }
+    }
+
+    function submitReservasi() {
+      const keberangkatanId = parseInt(document.getElementById('formKeberangkatan').value);
+      const kbData = dummyData.keberangkatan.find(k => k.id === keberangkatanId);
+      if (!kbData) { showToast('Pilih keberangkatan terlebih dahulu', 'error'); return; }
+
+      const newRes = {
+        id: dummyData.reservasi.length + 1,
+        reservasiNo: generateReservasiNo(kbData.kode),
+        keberangkatanId,
+        keberangkatanKode: kbData.kode,
+        hotelId: parseInt(document.getElementById('formHotel').value),
+        hotelNama: dummyData.hotels.find(h => h.id === parseInt(document.getElementById('formHotel').value))?.nama || '',
+        kota: dummyData.hotels.find(h => h.id === parseInt(document.getElementById('formHotel').value))?.kota || '',
+        paket: document.getElementById('formPaket').value,
+        roomType: document.getElementById('formRoomType').value,
+        jumlahKamar: parseInt(document.getElementById('formJumlah').value),
+        kapasitasTotal: parseInt(document.getElementById('formJumlah').value) * (document.getElementById('formRoomType').value === 'Quad' ? 4 : document.getElementById('formRoomType').value === 'Triple' ? 3 : 2),
+        checkIn: document.getElementById('formCheckIn').value,
+        checkOut: document.getElementById('formCheckOut').value,
+        vendorRef: document.getElementById('formVendorRef').value,
+        status: 'Confirmed',
+        amendmentLog: [],
+        createdBy: dummyData.currentUser.name,
+        createdAt: new Date().toISOString().split('T')[0]
+      };
+
+      dummyData.reservasi.push(newRes);
+      closeModal('addReservasiModal');
+      showToast(`Reservasi ${newRes.reservasiNo} berhasil dibuat!`, 'success');
+      renderTable();
+    }
+
+    function openAmendModal(id) {
+      currentAmendId = id;
+      const res = dummyData.reservasi.find(r => r.id === id);
+      document.getElementById('amendReservasiNo').textContent = res.reservasiNo;
+      document.getElementById('amendCheckIn').value = res.checkIn;
+      document.getElementById('amendCheckOut').value = res.checkOut;
+      openModal('amendModal');
+    }
+
+    function submitAmendment() {
+      const res = dummyData.reservasi.find(r => r.id === currentAmendId);
+      const newCI = document.getElementById('amendCheckIn').value;
+      const newCO = document.getElementById('amendCheckOut').value;
+      const result = checkRoomAvailability(res.hotelId, res.roomType, res.jumlahKamar, newCI, newCO, currentAmendId);
+
+      if (!result.available) {
+        showToast(`Konflik! Hanya ${result.tersedia} kamar tersedia di tanggal tersebut.`, 'error');
+        return;
+      }
+
+      res.amendmentLog.push({ tanggal: new Date().toISOString().split('T')[0], perubahan: `Check-in diubah dari ${res.checkIn} ke ${newCI}, Check-out dari ${res.checkOut} ke ${newCO}`, oleh: dummyData.currentUser.name });
+      res.checkIn = newCI;
+      res.checkOut = newCO;
+      res.status = 'Amendment';
+      closeModal('amendModal');
+      showToast('Amendment berhasil disimpan!', 'success');
+      renderTable();
+    }
+
+    function renderTable() {
+      const search = document.getElementById('filterSearch').value.toLowerCase();
+      const kota = document.getElementById('filterKota').value;
+      const status = document.getElementById('filterStatus').value;
+
+      const filtered = dummyData.reservasi.filter(r =>
+        (!search || r.reservasiNo.toLowerCase().includes(search) || r.hotelNama.toLowerCase().includes(search) || r.keberangkatanKode.toLowerCase().includes(search)) &&
+        (!kota || r.kota === kota) &&
+        (!status || r.status === status)
+      );
+
+      const statusColors = { Confirmed: 'badge-success', Amendment: 'badge-warning', Cancelled: 'badge-secondary' };
+      const kotaColors = { Mekkah: 'bg-blue-100 text-blue-700', Madinah: 'bg-blue-100 text-blue-700' };
+      const paketMap = dummyData.paketMap;
+
+      document.getElementById('reservasiTable').innerHTML = filtered.length === 0 ?
+        `<tr><td colspan="7" class="px-6 py-16 text-center text-slate-400 font-medium">Tidak ada data reservasi</td></tr>` :
+        filtered.map(r => `
+          <tr class="hover:bg-slate-50/50 transition-colors">
+            <td class="px-6 py-5">
+              <p class="font-bold tracking-tight-data text-slate-900 text-sm">${r.reservasiNo}</p>
+              ${r.vendorRef ? `<p class="text-[10px] text-slate-400 mt-0.5 tracking-micro">Ref: ${r.vendorRef}</p>` : ''}
+              ${r.amendmentLog.length > 0 ? `<span class="inline-flex items-center gap-1 mt-1.5 text-[9px] font-bold text-amber-600 bg-amber-50 px-1.5 py-0.5 rounded tracking-wider"><i data-lucide="history" class="w-2.5 h-2.5"></i>${r.amendmentLog.length}x amended</span>` : ''}
+            </td>
+            <td class="px-6 py-5">
+              <p class="text-sm font-bold text-slate-800">${r.keberangkatanKode}</p>
+              <span class="inline-block mt-1 text-[10px] font-bold px-2 py-0.5 rounded-lg ${(paketMap[r.paket]||{color:'bg-slate-100 text-slate-600'}).color}">${(paketMap[r.paket]||{label:r.paket}).label}</span>
+            </td>
+            <td class="px-6 py-5">
+              <p class="text-sm font-bold text-slate-800">${r.hotelNama}</p>
+              <span class="inline-block mt-1 text-[10px] font-bold px-2 py-0.5 rounded-lg ${kotaColors[r.kota]||''}">${r.kota}</span>
+            </td>
+            <td class="px-6 py-5">
+              <p class="text-sm font-bold text-slate-900">${r.jumlahKamar} Kamar ${r.roomType}</p>
+              <p class="text-[10px] text-slate-400 mt-0.5">${r.kapasitasTotal} pax kapasitas</p>
+            </td>
+            <td class="px-6 py-5">
+              <div class="flex items-center gap-2">
+                <div class="text-center">
+                  <p class="text-[9px] font-bold text-slate-400 uppercase tracking-micro">Check-In</p>
+                  <p class="text-sm font-bold text-slate-900">${r.checkIn}</p>
+                </div>
+                <i data-lucide="arrow-right" class="w-4 h-4 text-slate-300"></i>
+                <div class="text-center">
+                  <p class="text-[9px] font-bold text-slate-400 uppercase tracking-micro">Check-Out</p>
+                  <p class="text-sm font-bold text-slate-900">${r.checkOut}</p>
+                </div>
+              </div>
+            </td>
+            <td class="px-6 py-5">
+              <span class="badge ${statusColors[r.status]||'badge-secondary'}">${r.status}</span>
+            </td>
+            <td class="px-6 py-5 text-right">
+              <div class="flex items-center justify-end gap-1">
+                <button onclick="openAmendModal(${r.id})" class="p-2 text-slate-400 hover:text-amber-600 hover:bg-amber-50 rounded-xl transition-all" title="Amendment">
+                  <i data-lucide="edit-3" class="w-4 h-4"></i>
+                </button>
+                <button onclick="cancelReservasi(${r.id})" class="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-xl transition-all" title="Cancel">
+                  <i data-lucide="x-circle" class="w-4 h-4"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+        `).join('');
+      lucide.createIcons();
+    }
+
+    function cancelReservasi(id) {
+      const res = dummyData.reservasi.find(r => r.id === id);
+      res.status = 'Cancelled';
+      showToast(`Reservasi ${res.reservasiNo} dibatalkan.`, 'warning');
+      renderTable();
+    }
+
+    initDropdowns();
+    renderTable();
+  </script>
+</body>
+</html>

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inventory Kamar - Sistem Manajemen Haji & Umroh</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="../assets/css/custom.css">
+</head>
+<body class="bg-premium">
+
+  <!-- Sidebar -->
+  <div id="sidebar-container"></div>
+
+  <!-- Main Content -->
+  <div class="lg:ml-72">
+    <!-- Topbar -->
+    <div id="topbar-container"></div>
+
+    <!-- Page Content -->
+    <main class="p-6">
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-10 gap-4">
+        <div>
+          <h1 class="text-3xl font-extrabold text-slate-900 tracking-tight mb-2">Inventory & Okupansi Kamar</h1>
+          <p class="text-slate-500 font-medium">Monitoring ketersediaan tipe kamar (Quad, Triple, Double) secara real-time.</p>
+        </div>
+        <div class="flex gap-3 mt-4 md:mt-0">
+          <button onclick="showToast('Data inventory diperbarui')" class="flex items-center gap-2.5 px-6 py-3 bg-white border border-slate-200 text-slate-700 rounded-2xl hover:bg-slate-50 transition-all font-bold shadow-sm text-sm">
+            <i data-lucide="refresh-cw" class="w-5 h-5"></i>
+            Refresh Data
+          </button>
+        </div>
+      </div>
+
+      <!-- Inventory Grid -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8" id="inventoryGrid">
+        <!-- Will be populated by JS -->
+      </div>
+    </main>
+  </div>
+
+  <script src="../assets/js/data.js"></script>
+  <script src="../assets/js/main.js"></script>
+  <script>
+    lucide.createIcons();
+
+    function renderInventory() {
+      const grid = document.getElementById('inventoryGrid');
+      grid.innerHTML = dummyData.hotelInventory.map(hotel => `
+        <div class="pro-card overflow-hidden reveal">
+          <div class="p-8 border-b border-slate-100 bg-slate-50/50">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-5">
+                <div class="p-3.5 bg-slate-900 rounded-2xl shadow-lg shadow-slate-200">
+                  <i data-lucide="hotel" class="w-6 h-6 text-white"></i>
+                </div>
+                <div>
+                  <h3 class="text-xl font-extrabold text-slate-900 tracking-tight">${hotel.hotelName}</h3>
+                  <p class="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] mt-1">Stok Kamar Terpadu</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="p-8 space-y-10">
+            ${hotel.rooms.map(room => {
+              const percent = (room.used / room.total) * 100;
+              const isFull = percent >= 100;
+              return `
+                <div class="group">
+                  <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center gap-3">
+                      <span class="text-sm font-bold text-slate-800">${room.type} Room</span>
+                      ${isFull ? '<span class="badge-subtle badge-subtle-danger">Full Capacity</span>' : ''}
+                    </div>
+                    <span class="text-sm font-extrabold text-slate-900">${room.used} <span class="text-slate-300 font-medium">/ ${room.total}</span></span>
+                  </div>
+                  <div class="w-full h-3.5 bg-slate-100 rounded-full overflow-hidden shadow-inner">
+                    <div class="h-full transition-all duration-1000 ease-out rounded-full ${isFull ? 'bg-red-500' : 'bg-blue-600 shadow-lg shadow-blue-200'}" style="width: ${percent}%"></div>
+                  </div>
+                  <div class="flex items-center justify-between mt-3">
+                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em]">Rate: ${formatRupiah(room.price)}</p>
+                    <p class="text-[10px] font-bold ${isFull ? 'text-red-500' : 'text-blue-600'} uppercase tracking-[0.2em]">${room.total - room.used} Unit Tersedia</p>
+                  </div>
+                </div>
+              `;
+            }).join('')}
+          </div>
+        </div>
+      `).join('');
+      lucide.createIcons();
+    }
+
+    renderInventory();
+  </script>
+</body>
+</html>

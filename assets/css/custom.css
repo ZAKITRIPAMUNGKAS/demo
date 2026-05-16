@@ -1,0 +1,215 @@
+/* 
+========================================================================
+PREMIUM ENTERPRISE SAAS DESIGN SYSTEM
+Haji & Umroh Hotel Management
+========================================================================
+*/
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap');
+
+:root {
+  /* Core Colors */
+  --brand-primary: #0f172a;     /* Deep Slate / Navy */
+  --brand-accent: #2563eb;      /* Royal Blue */
+  --brand-accent-hover: #1d4ed8;
+  --brand-gold: #eab308;        /* Premium gold */
+  
+  /* Backgrounds */
+  --bg-app: #fafafa;
+  --bg-card: #ffffff;
+  
+  /* Text */
+  --text-main: #111827;
+  --text-muted: #6b7280;
+  
+  /* Borders & Shadows */
+  --border-light: rgba(0, 0, 0, 0.05);
+  --border-strong: rgba(0, 0, 0, 0.08);
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.02);
+  --shadow-card: 0 4px 20px -2px rgba(0, 0, 0, 0.03), 0 0 3px rgba(0,0,0,0.01);
+  --shadow-hover: 0 10px 30px -5px rgba(0, 0, 0, 0.06), 0 4px 10px -2px rgba(0, 0, 0, 0.03);
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  color: var(--text-main);
+  background-color: var(--bg-app);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* 
+=========================================
+TYPOGRAPHY
+=========================================
+*/
+h1, h2, h3, h4, h5, h6, .font-outfit {
+  font-family: 'Outfit', sans-serif;
+  letter-spacing: -0.03em;
+}
+
+/* Subtle tight tracking for data numbers */
+.tracking-tight-data {
+  letter-spacing: -0.04em;
+}
+
+/* Wide tracking for micro-labels */
+.tracking-micro {
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+/* 
+=========================================
+COMPONENTS
+=========================================
+*/
+
+/* Premium Card */
+.pro-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: 1.25rem; /* 20px - modern squircle look */
+  box-shadow: var(--shadow-card);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.pro-card:hover {
+  border-color: var(--border-strong);
+  box-shadow: var(--shadow-hover);
+  transform: translateY(-2px);
+}
+
+/* Premium Button */
+.btn-pro {
+  background: var(--brand-primary);
+  color: white;
+  font-weight: 600;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.875rem;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  box-shadow: 0 2px 4px rgba(15, 23, 42, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.btn-pro:hover {
+  background: #1e293b;
+  box-shadow: 0 6px 15px rgba(15, 23, 42, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  transform: translateY(-1px);
+}
+
+/* Data Tables */
+.data-table-container {
+  overflow-x: auto;
+}
+table th {
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+table tr {
+  transition: background-color 0.2s ease;
+}
+table tr:hover {
+  background-color: #f8fafc !important;
+}
+
+/* Badges */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.6rem;
+  border-radius: 0.5rem;
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.badge-success { background: #ecfdf5; color: #065f46; } /* Softer backgrounds */
+.badge-warning { background: #fffbeb; color: #b45309; }
+.badge-danger  { background: #fef2f2; color: #991b1b; }
+.badge-info    { background: #eff6ff; color: #1e40af; }
+.badge-secondary { background: #f3f4f6; color: #4b5563; }
+
+/* 
+=========================================
+LAYOUT & UTILITIES
+=========================================
+*/
+
+/* Premium Backgrounds */
+.bg-premium {
+  background-color: #FAFAFA;
+  background-image: 
+    radial-gradient(at 0% 0%, rgba(37, 99, 235, 0.03) 0px, transparent 50%),
+    radial-gradient(at 100% 0%, rgba(234, 179, 8, 0.02) 0px, transparent 50%);
+}
+
+.bg-midnight-glass {
+  background-color: #0f172a; /* Deep Slate */
+  background-image: linear-gradient(180deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0) 100%);
+}
+
+/* Sidebar Specifics */
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  padding: 0.75rem 1rem;
+  border-radius: 0.875rem;
+  color: #9ca3af;
+  font-weight: 500;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  font-size: 0.875rem;
+}
+
+.nav-item:hover {
+  background: rgba(255, 255, 255, 0.04);
+  color: #f3f4f6;
+}
+
+.nav-item-active {
+  background: rgba(37, 99, 235, 0.1);
+  color: #3b82f6;
+  box-shadow: inset 3px 0 0 #3b82f6;
+}
+
+/* Animations */
+@keyframes slideUpFade {
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.reveal {
+  animation: slideUpFade 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Calendar specifics */
+.cal-day {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.cal-day:hover {
+  z-index: 10;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+  border-color: rgba(0,0,0,0.1);
+}

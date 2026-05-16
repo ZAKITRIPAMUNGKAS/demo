@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard | Manajemen Hotel Haji & Umroh</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <link rel="stylesheet" href="assets/css/custom.css">
+</head>
+<body class="bg-premium min-h-screen">
+  <div id="sidebar-container"></div>
+  <div class="lg:ml-72 min-h-screen flex flex-col">
+    <div id="topbar-container"></div>
+    <main class="p-8 flex-1 reveal">
+
+      <!-- Welcome -->
+      <div class="mb-8">
+        <h3 class="text-3xl font-bold text-slate-900 tracking-tight">Selamat Datang, Ahmad!</h3>
+        <p class="text-slate-500 font-medium mt-1">Ringkasan ketersediaan kamar hotel & status keberangkatan hari ini.</p>
+      </div>
+
+      <!-- Stats Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8" id="statsRow"></div>
+
+      <!-- Main Grid -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
+
+        <!-- Hotel Occupancy Status -->
+        <div class="lg:col-span-2 pro-card overflow-hidden flex flex-col h-full">
+          <div class="px-8 py-6 border-b border-slate-100 flex items-center justify-between">
+            <div>
+              <h3 class="text-lg font-bold text-slate-900 tracking-tight">Ocupansi Hotel — Hari Ini</h3>
+              <p class="text-[10px] text-slate-400 font-medium mt-1 uppercase tracking-wider" id="todayDate"></p>
+            </div>
+            <a href="kalender/index.html" class="text-xs font-bold text-slate-500 hover:text-slate-700 flex items-center gap-1 transition">
+              Lihat Kalender <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+            </a>
+          </div>
+          <div class="p-6 space-y-5 flex-1" id="hotelOccupancyList"></div>
+          
+          <!-- Ringkasan Inventory (Fills empty space) -->
+          <div class="px-6 py-5 bg-slate-50/50 border-t border-slate-100 mt-auto">
+            <h4 class="text-[9px] font-bold text-slate-400 uppercase tracking-micro mb-4">Total Inventory Kamar Keseluruhan</h4>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4" id="globalRoomStats"></div>
+          </div>
+        </div>
+
+        <!-- Quick Actions & Activity -->
+        <div class="space-y-6">
+          <!-- Quick Actions -->
+          <div class="bg-midnight-glass rounded-[1.5rem] shadow-lg p-7 text-white relative overflow-hidden border border-white/5">
+            <div class="absolute top-0 right-0 w-28 h-28 bg-white/5 rounded-bl-[5rem] -mr-8 -mt-8"></div>
+            <h3 class="text-base font-bold text-white tracking-tight mb-6 relative z-10">Akses Cepat</h3>
+            <div class="space-y-3 relative z-10">
+              <a href="reservasi/index.html" class="flex items-center gap-3 p-3 bg-white/5 hover:bg-white/10 rounded-2xl border border-white/10 group transition-all">
+                <div class="p-2 bg-white/10 rounded-xl group-hover:bg-white group-hover:text-slate-900 transition-all">
+                  <i data-lucide="calendar-check" class="w-4 h-4"></i>
+                </div>
+                <div>
+                  <p class="text-sm font-bold">Reservasi Hotel</p>
+                  <p class="text-[10px] font-bold text-white/40 uppercase tracking-widest">Buat & Kelola</p>
+                </div>
+              </a>
+              <a href="kalender/index.html" class="flex items-center gap-3 p-3 bg-white/5 hover:bg-blue-500/20 rounded-2xl border border-white/10 group transition-all">
+                <div class="p-2 bg-white/10 rounded-xl group-hover:bg-blue-500 group-hover:text-white transition-all">
+                  <i data-lucide="calendar-days" class="w-4 h-4 text-blue-400 group-hover:text-white"></i>
+                </div>
+                <div>
+                  <p class="text-sm font-bold">Kalender Ocupansi</p>
+                  <p class="text-[10px] font-bold text-white/40 uppercase tracking-widest">Visual Bulanan</p>
+                </div>
+              </a>
+              <a href="jamaah/index.html" class="flex items-center gap-3 p-3 bg-white/5 hover:bg-white/10 rounded-2xl border border-white/10 group transition-all">
+                <div class="p-2 bg-white/10 rounded-xl group-hover:bg-white group-hover:text-slate-900 transition-all">
+                  <i data-lucide="upload" class="w-4 h-4"></i>
+                </div>
+                <div>
+                  <p class="text-sm font-bold">Upload Jamaah</p>
+                  <p class="text-[10px] font-bold text-white/40 uppercase tracking-widest">Import Excel</p>
+                </div>
+              </a>
+              <a href="MAPPING HOTEL.xlsx" download class="flex items-center gap-3 p-3 bg-white/5 hover:bg-amber-500/20 rounded-2xl border border-white/10 group transition-all">
+                <div class="p-2 bg-white/10 rounded-xl group-hover:bg-amber-500 group-hover:text-white transition-all">
+                  <i data-lucide="file-spreadsheet" class="w-4 h-4 text-amber-400 group-hover:text-white"></i>
+                </div>
+                <div>
+                  <p class="text-sm font-bold">Mapping Hotel</p>
+                  <p class="text-[10px] font-bold text-white/40 uppercase tracking-widest">Buka .xlsx</p>
+                </div>
+              </a>
+            </div>
+          </div>
+
+          <!-- Active Departures -->
+          <div class="pro-card p-6">
+            <h3 class="text-sm font-bold text-slate-900 tracking-tight mb-4">Keberangkatan Aktif</h3>
+            <div id="activeKeberangkatan" class="space-y-3"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent Reservasi + Activity -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- Recent Reservasi -->
+        <div class="pro-card overflow-hidden">
+          <div class="px-6 py-5 border-b border-slate-100 flex items-center justify-between">
+            <h3 class="text-base font-bold text-slate-900">Reservasi Terbaru</h3>
+            <a href="reservasi/index.html" class="text-xs font-bold text-blue-600 hover:text-blue-700 flex items-center gap-1">Semua <i data-lucide="arrow-right" class="w-3 h-3"></i></a>
+          </div>
+          <div class="divide-y divide-slate-50" id="recentReservasi"></div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="pro-card overflow-hidden">
+          <div class="px-6 py-5 border-b border-slate-100">
+            <h3 class="text-base font-bold text-slate-900">Aktivitas Terbaru</h3>
+          </div>
+          <div class="divide-y divide-slate-50" id="activityList"></div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/main.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => lucide.createIcons());
+    // MOCK DATE UNTUK DEMO: Semua reservasi ada di bulan Juli 2026
+    const today = '2026-07-08'; 
+    const todayDate = new Date('2026-07-08');
+
+    function renderDashboard() {
+      document.getElementById('todayDate').textContent = todayDate.toLocaleDateString('id-ID', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
+
+      // ── STATS ───────────────────────────────────────────────
+      const totalHotel = dummyData.hotels.length;
+      const totalKamar = dummyData.hotels.reduce((s,h) => s+h.rooms.length, 0);
+      const totalReservasi = dummyData.reservasi.filter(r => r.status !== 'Cancelled').length;
+      const totalJamaah = dummyData.jamaah.length;
+      const amendments = dummyData.reservasi.filter(r => r.status === 'Amendment').length;
+
+      document.getElementById('statsRow').innerHTML = `
+        <div class="pro-card p-7 relative overflow-hidden">
+          <div class="absolute top-0 right-0 w-20 h-20 bg-slate-50 rounded-bl-[3rem]"></div>
+          <div class="relative z-10">
+            <div class="flex items-center justify-between mb-5">
+              <div class="p-3 bg-slate-900 rounded-xl shadow-sm"><i data-lucide="building-2" class="w-5 h-5 text-white"></i></div>
+              <span class="badge badge-success">${totalHotel} Hotel</span>
+            </div>
+            <h3 class="text-3xl font-bold text-slate-900 mb-1">${totalKamar}</h3>
+            <p class="text-[10px] text-slate-400 tracking-micro">Total Unit Kamar</p>
+          </div>
+        </div>
+        <div class="pro-card p-7 relative overflow-hidden">
+          <div class="absolute top-0 right-0 w-20 h-20 bg-slate-50 rounded-bl-[3rem]"></div>
+          <div class="relative z-10">
+            <div class="flex items-center justify-between mb-5">
+              <div class="p-3 bg-slate-900 rounded-xl shadow-sm"><i data-lucide="calendar-check" class="w-5 h-5 text-white"></i></div>
+            </div>
+            <h3 class="text-3xl font-bold text-slate-900 mb-1">${totalReservasi}</h3>
+            <p class="text-[10px] text-slate-400 tracking-micro">Reservasi Aktif</p>
+          </div>
+        </div>
+        <div class="pro-card p-7 relative overflow-hidden">
+          <div class="absolute top-0 right-0 w-20 h-20 bg-slate-50 rounded-bl-[3rem]"></div>
+          <div class="relative z-10">
+            <div class="flex items-center justify-between mb-5">
+              <div class="p-3 bg-slate-900 rounded-xl shadow-sm"><i data-lucide="users" class="w-5 h-5 text-white"></i></div>
+            </div>
+            <h3 class="text-3xl font-bold text-slate-900 mb-1">${totalJamaah}</h3>
+            <p class="text-[10px] text-slate-400 tracking-micro">Total Jamaah</p>
+          </div>
+        </div>
+        <div class="pro-card p-7 relative overflow-hidden ${amendments > 0 ? 'border-amber-200' : ''}">
+          <div class="absolute top-0 right-0 w-20 h-20 ${amendments > 0 ? 'bg-amber-50' : 'bg-slate-50'} rounded-bl-[3rem]"></div>
+          <div class="relative z-10">
+            <div class="flex items-center justify-between mb-5">
+              <div class="p-3 ${amendments > 0 ? 'bg-amber-500' : 'bg-slate-900'} rounded-xl shadow-sm"><i data-lucide="${amendments > 0 ? 'alert-triangle' : 'check-circle'}" class="w-5 h-5 text-white"></i></div>
+            </div>
+            <h3 class="text-3xl font-bold ${amendments > 0 ? 'text-amber-600' : 'text-slate-900'} mb-1">${amendments}</h3>
+            <p class="text-[10px] text-slate-400 tracking-micro">Perlu Amendment</p>
+          </div>
+        </div>
+      `;
+
+      // ── HOTEL OCCUPANCY ──────────────────────────────────────
+      const kotaColors = { Mekkah: 'bg-slate-100 text-slate-600 border border-slate-200', Madinah: 'bg-blue-50 text-blue-600 border border-blue-100' };
+      document.getElementById('hotelOccupancyList').innerHTML = dummyData.hotels.map(hotel => {
+        const pct = getHotelOccupancyOnDate(hotel.id, today);
+        const barColor = pct >= 85 ? 'bg-red-400' : pct >= 60 ? 'bg-amber-400' : 'bg-blue-400';
+        const pctBadge = pct >= 85 ? 'bg-red-50 text-red-600' : pct >= 60 ? 'bg-amber-50 text-amber-600' : 'bg-blue-50 text-blue-600';
+        const aktif = getActiveReservasiOnDate(today, hotel.id);
+
+        return `
+          <div class="group">
+            <div class="flex items-center justify-between mb-2">
+              <div class="flex items-center gap-3">
+                <span class="text-sm font-bold text-slate-900">${hotel.nama}</span>
+                <span class="badge ${kotaColors[hotel.kota]||''}">${hotel.kota}</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="px-2 py-0.5 text-[10px] font-bold rounded-lg ${pctBadge}">${pct}% terisi</span>
+                ${aktif.length > 0 ? `<span class="text-[10px] text-slate-400 font-medium">${aktif.length} reservasi</span>` : ''}
+              </div>
+            </div>
+            <div class="w-full h-3 bg-slate-100 rounded-full overflow-hidden">
+              <div class="h-full ${barColor} rounded-full transition-all duration-700" style="width:${pct}%"></div>
+            </div>
+            <div class="flex justify-between mt-1">
+              <p class="text-[10px] text-slate-400">${hotel.rooms.length} unit total</p>
+              ${pct >= 85 ? '<p class="text-[10px] font-bold text-red-600 animate-pulse">⚠ Hampir Penuh!</p>' : ''}
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      // ── GLOBAL ROOM STATS ────────────────────────────────────
+      const globalRoomSummary = { Quad: 0, Triple: 0, Double: 0, Single: 0 };
+      dummyData.hotels.forEach(h => {
+        h.rooms.forEach(r => {
+          if (globalRoomSummary[r.roomType] !== undefined) globalRoomSummary[r.roomType]++;
+          else globalRoomSummary[r.roomType] = 1;
+        });
+      });
+      const typeIcons = { Quad: 'users', Triple: 'user-round', Double: 'users-round', Single: 'user' };
+      document.getElementById('globalRoomStats').innerHTML = Object.entries(globalRoomSummary)
+        .filter(([_, count]) => count > 0)
+        .map(([type, count]) => `
+          <div class="bg-white rounded-xl p-3 border border-slate-200 shadow-sm flex items-center gap-3 transition-transform hover:-translate-y-0.5">
+            <div class="p-2 bg-slate-100 rounded-lg text-slate-500">
+              <i data-lucide="${typeIcons[type]||'bed'}" class="w-4 h-4"></i>
+            </div>
+            <div>
+              <p class="text-lg font-bold text-slate-900 leading-none tracking-tight-data">${count}</p>
+              <p class="text-[9px] text-slate-500 uppercase tracking-micro mt-1">${type}</p>
+            </div>
+          </div>
+        `).join('');
+
+      // ── KEBERANGKATAN AKTIF ────────────────────────────────
+      const open = dummyData.keberangkatan.filter(k => k.status === 'Open');
+      document.getElementById('activeKeberangkatan').innerHTML = open.map(k => {
+        const pctJamaah = Math.round((k.totalJamaah / k.kuotaMax) * 100);
+        const barColor = pctJamaah >= 85 ? 'bg-red-400' : pctJamaah >= 60 ? 'bg-amber-400' : 'bg-blue-400';
+        return `
+          <div class="p-3 bg-slate-50/50 rounded-xl border border-slate-100 hover:border-slate-200 transition-colors">
+            <p class="text-xs font-bold text-slate-900 mb-1 tracking-tight-data">${k.kode}</p>
+            <p class="text-[10px] text-slate-500 mb-2 font-medium">${k.tanggalBerangkat} &bull; ${k.namaMaskapai}</p>
+            <div class="flex items-center gap-2">
+              <div class="flex-1 h-1.5 bg-slate-200 rounded-full overflow-hidden">
+                <div class="h-full ${barColor} rounded-full" style="width:${pctJamaah}%"></div>
+              </div>
+              <span class="text-[10px] font-extrabold text-slate-700">${k.totalJamaah}/${k.kuotaMax}</span>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      // ── RECENT RESERVASI ────────────────────────────────────
+      const statusColors = { Confirmed: 'badge-success', Amendment: 'badge-warning', Cancelled: 'badge-secondary' };
+      document.getElementById('recentReservasi').innerHTML = dummyData.reservasi.slice(-4).reverse().map(r => `
+        <div class="flex items-center gap-4 px-6 py-4 hover:bg-slate-50/50 transition-colors">
+          <div class="p-2.5 bg-slate-50 border border-slate-100 rounded-xl flex-shrink-0">
+            <i data-lucide="calendar-check" class="w-4 h-4 text-slate-600"></i>
+          </div>
+          <div class="flex-1 min-w-0">
+            <p class="text-sm font-bold text-slate-900 truncate">${r.reservasiNo}</p>
+            <p class="text-xs text-slate-500 truncate mt-0.5">${r.hotelNama} &bull; ${r.jumlahKamar}x ${r.roomType}</p>
+          </div>
+          <span class="badge ${statusColors[r.status]||'badge-secondary'} flex-shrink-0">${r.status}</span>
+        </div>
+      `).join('');
+
+      // ── ACTIVITY ────────────────────────────────────────────
+      const iconColors = { success: 'bg-blue-100 text-blue-700', warning: 'bg-amber-100 text-amber-700', danger: 'bg-red-100 text-red-700', info: 'bg-blue-100 text-blue-700' };
+      document.getElementById('activityList').innerHTML = dummyData.aktivitasTerbaru.map(a => `
+        <div class="flex items-start gap-4 px-6 py-4 hover:bg-slate-50/50 transition-colors">
+          <div class="p-2.5 rounded-xl flex-shrink-0 border border-white/50 shadow-sm ${iconColors[a.type]||'bg-slate-100 text-slate-600'}">
+            <i data-lucide="${a.icon}" class="w-4 h-4"></i>
+          </div>
+          <div class="flex-1 min-w-0">
+            <p class="text-sm font-medium text-slate-800 leading-snug">${a.text}</p>
+            <p class="text-[9px] tracking-micro text-slate-400 mt-1.5">${a.time}</p>
+          </div>
+        </div>
+      `).join('');
+
+      lucide.createIcons();
+    }
+
+    renderDashboard();
+  </script>
+</body>
+</html>
